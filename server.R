@@ -33,13 +33,11 @@ shinyServer(function(input, output) {
   
   output$summary <- renderPrint({
     
-    #hrv.data = CreateHRVData()
-    #hrv.data = SetVerbose(hrv.data, TRUE)
-    #hrv.data = LoadBeatAscii(hrv.data, "example.beats")
-    #hrv.data = BuildNIHR(hrv.data)
-    #hrv.dataa = hrv.data
-    #hrv.data = FilterNIHR(hrv.data)
-    #hrv.data = InterpolateNIHR (hrv.data, freqhr = 4)
+    hrv.data = CreateHRVData()
+    hrv.data = SetVerbose(hrv.data, TRUE)
+    hrv.data = LoadBeatAscii(hrv.data, "example.beats")
+    hrv.data = BuildNIHR(hrv.data)
+  
     
   })
   output$contents <- renderPlot({
@@ -100,9 +98,9 @@ shinyServer(function(input, output) {
   
   
   
-  output$timeanalysis <- renderTable({
+  output$timeanalysis <- renderPrint({
     CreateTimeAnalysis(hrv.data)
-    factor(1:3)
+    #factor(1:3)
   })
   
   output$fourierT <- renderPrint({
