@@ -7,9 +7,7 @@ shinyServer(function(input, output) {
   
   
   datasetInput <- reactive({
-    Time <- paste(input$hourId,':',input$minuteId,':',input$secondId,sep = '')
-    Date <- paste(input$dayId,'/',input$monthId,'/',input$yearId,sep = '')
-    dateTTime <- paste(Date, Time, sep = ' ')
+    
   })
   #datasetInput <- reactive({
   #  switch(input$type,
@@ -32,11 +30,11 @@ shinyServer(function(input, output) {
   
   
   output$summary <- renderPrint({
-    
-    hrv.data = CreateHRVData()
-    hrv.data = SetVerbose(hrv.data, TRUE)
-    hrv.data = LoadBeatAscii(hrv.data, "example.beats")
-    hrv.data = BuildNIHR(hrv.data)
+   
+    #hrv.data = CreateHRVData()
+    #hrv.data = SetVerbose(hrv.data, TRUE)
+    #hrv.data = LoadBeatAscii(hrv.data, "example.beats")
+    #hrv.data = BuildNIHR(hrv.data)
   
     
   })
@@ -48,15 +46,23 @@ shinyServer(function(input, output) {
     # data can be found.
     
     inFile <- input$file1
-    
+    print(inFile)
     if (is.null(inFile))
       return(NULL)
     x <- list(x = cars[,1], y = cars[,2])
     
-    read.csv(inFile$datapath)
+    data <- read.csv(file=inFile$datapath,header=F)$V1
+    print(head(data))
     hrv.data = CreateHRVData()
     hrv.data = SetVerbose(hrv.data, TRUE)
-    hrv.data = LoadBeatAscii(hrv.data, "example.beats", scale = input$timeScale, datetime = "30/04/2012 12:00:00")
+    Time <- paste(input$hourId,':',input$minuteId,':',input$secondId,sep = '')
+    date.in <- as.character(input$date)
+    date.split <- strsplit(date.in,split="-" )
+    Date <- paste(date.split[[1]][3],date.split[[1]][2],date.split[[1]][1],sep="/")
+    dateTTime <- paste(Date, Time, sep = ' ')
+    
+    hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = input$timeScale, datetime = dateTTime)
+    
     hrv.data = BuildNIHR(hrv.data)
     PlotNIHR(hrv.data)
         
@@ -89,11 +95,12 @@ shinyServer(function(input, output) {
   output$filteringM <- renderPrint({
     hrv.data = EditNIHR(hrv.data)
     #hrv.dataa = hrv.data
+    output$filteringmM <- renderPlot({
+      PlotNIHR(hrv.data)
+    })
   })
   
-  output$filteringmM <- renderPlot({
-    PlotNIHR(hrv.data)
-  })
+
   
   
   
