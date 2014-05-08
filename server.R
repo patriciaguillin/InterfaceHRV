@@ -9,35 +9,9 @@ shinyServer(function(input, output) {
   datasetInput <- reactive({
     
   })
-  #datasetInput <- reactive({
-  #  switch(input$type,
-  #         "Acii" = t_ascii,
-  #         "RR" = t_rr,
-  #         "WFDB" = t_wfdb,
-  #         "Polar" = t_polar,
-  #         "Suunto" = t_suunto,
-  #         "EDF+" = t_edf)
-  #})
+
   
-  #datasetInput <- reactive({
-  #  switch(input$timeScale,
-  #         "1" = 1,
-  #         "2" = 01,
-  #         "Hundredths of a second" = 0.01,
-  #         "Milisecond" = 0.001
-  #         )
-  #})
-  
-  
-  output$summary <- renderPrint({
-   
-    #hrv.data = CreateHRVData()
-    #hrv.data = SetVerbose(hrv.data, TRUE)
-    #hrv.data = LoadBeatAscii(hrv.data, "example.beats")
-    #hrv.data = BuildNIHR(hrv.data)
-  
-    
-  })
+  #LOADING FILE -> GRAPHIC
   output$contents <- renderPlot({
     
     # input$file1 will be NULL initially. After the user selects and uploads a 
@@ -65,7 +39,97 @@ shinyServer(function(input, output) {
     
     hrv.data = BuildNIHR(hrv.data)
     PlotNIHR(hrv.data)
+    
+    #LOADING FILE -> CONSOLE
+    output$summary <- renderPrint({
+      hrv.data = CreateHRVData()
+      hrv.data = SetVerbose(hrv.data, TRUE)
+      hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = input$timeScale, datetime = dateTTime)
+      hrv.data = BuildNIHR(hrv.data)
+      PlotNIHR(hrv.data)
+    })
+    
+    #LOADING FILE -> DOCUMENTATION
+    #(nada que mostrar por ahora)
+    output$documentationLoading <- renderPrint({
+      print(?CreateHRVData)
+      print(?LoadBeatAscii)
+      print(?BuildNIHR)
+      print(?PlotNIHR)
+      
+    })
+    
+    
+    #FILTERING -> AUTHOMATIC
+    
+    output$filtering <- renderPrint({
+      hrv.data = FilterNIHR(hrv.data)
+      output$filteringP <- renderPlot({
+        PlotNIHR(hrv.data)
+      })
+    })
+    
+    
+    
+    
+    #FILTERING -> MANUAL
+    output$filteringM <- renderPrint({
+      hrv.data = EditNIHR(hrv.data)
+      #hrv.dataa = hrv.data
+      output$filteringmM <- renderPlot({
+        PlotNIHR(hrv.data)
+      })
+    })
+   
+ 
+    
+    #INTERPOLATING
+    output$interpolate <- renderPrint({
+      hrv.data = InterpolateNIHR (hrv.data, freqhr = input$freqHR, method = input$methodInterpolation)
+      
+    })
         
+    
+    #ANALYSIS -> TIME
+    hr <- CreateTimeAnalysis(hrv.data)
+    output$timeanalysisV <- renderPrint({
+      print("Size of window:") 
+      print(hr$TimeAnalysis[[1]]$size)
+      
+      output$timeanalysis <- renderTable({
+        
+        hr$TimeAnalysis[[1]]
+        hr$TimeAnalysis[[1]]$HRVi 
+        smoke <- matrix(c(hr$TimeAnalysis[[1]]$SDNN,hr$TimeAnalysis[[1]]$SDANN,hr$TimeAnalysis[[1]]$SDNNIDX,
+                          hr$TimeAnalysis[[1]]$pNN50,hr$TimeAnalysis[[1]]$SDSD,hr$TimeAnalysis[[1]]$rMSSD,
+                          hr$TimeAnalysis[[1]]$IRRR,hr$TimeAnalysis[[1]]$MADRR,hr$TimeAnalysis[[1]]$TINN,
+                          hr$TimeAnalysis[[1]]$HRVi),ncol=1,byrow=TRUE)
+        colnames(smoke) <- c("")
+        rownames(smoke) <- c("SDNN","SDANN","SDNNIDX","pNN50","SDSD","r-MSSD","IRRR","MADRR","TINN","HRV index")
+        smoke
+      })
+    })
+    
+    
+    #ANALYSIS -> FREQUENCY
+    output$fourierT <- renderPrint({
+      spectrogram = CalculateSpectrogram(hrv.data, size = 300, shift = 30, sizesp = 2048) 
+    })
+    output$fourier <- renderPlot({
+      spectrogram = PlotSpectrogram(HRVData = hrv.data, size = 300, shift = 60, sizesp = 2048)
+    })
+    
+    output$wavelet <- renderPlot({
+      spectrogram = PlotSpectrogram(HRVData = hrv.data, size = 300, shift = 60, sizesp = 2048,
+                                    freqRange = c(0, 0.2))
+    })
+    
+    
+    #ANALYSIS -> NON LINEAR
+    #(nada que mostrar por ahora)
+    
+    
+    
   })
   
   output$options <- renderUI({
@@ -74,55 +138,11 @@ shinyServer(function(input, output) {
     
   })
   
-  output$filtering <- renderPrint({
-    hrv.data = FilterNIHR(hrv.data)
-    
-  })
-  
-  output$filteringP <- renderPlot({
-    PlotNIHR(hrv.data)
-  })
-  
-  output$interpolate <- renderPrint({
-    hrv.data = InterpolateNIHR (hrv.data, freqhr = 4)
-    
-  })
-  
-  output$interpolateP <- renderPlot({
-    
-  })
-  
-  output$filteringM <- renderPrint({
-    hrv.data = EditNIHR(hrv.data)
-    #hrv.dataa = hrv.data
-    output$filteringmM <- renderPlot({
-      PlotNIHR(hrv.data)
-    })
-  })
-  
-
   
   
   
   
-  output$timeanalysis <- renderPrint({
-    CreateTimeAnalysis(hrv.data)
-    #factor(1:3)
-  })
   
-  output$fourierT <- renderPrint({
-    spectrogram = CalculateSpectrogram(hrv.data, size = 300, shift = 30, sizesp = 2048) 
-  })
-  output$fourier <- renderPlot({
-    spectrogram = PlotSpectrogram(HRVData = hrv.data, size = 300, shift = 60, sizesp = 2048)
-  })
-  
-  output$wavelet <- renderPlot({
-    spectrogram = PlotSpectrogram(HRVData = hrv.data, size = 300, shift = 60, sizesp = 2048,
-                                  freqRange = c(0, 0.2))
-  })
-  
- 
 
   
 })

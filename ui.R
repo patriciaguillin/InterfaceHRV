@@ -44,7 +44,7 @@ shinyUI(navbarPage("RHRV Project",
                 tabsetPanel(
                     tabPanel("Graphic", plotOutput("contents")),
                     tabPanel("Console", verbatimTextOutput("summary")),
-                    tabPanel("Documentation", h3("Documentation" ))
+                    tabPanel("Documentation", verbatimTextOutput("documentationLoading"))
                   )
         
                 
@@ -59,15 +59,48 @@ shinyUI(navbarPage("RHRV Project",
                h3("Filtering")
                
              ),
+             # tabPanel("Authomatic", verbatimTextOutput("filtering"), plotOutput("filteringP")
+             #,tabsetPanel()
+             
+           #),
              mainPanel(
                #plotOutput("contents")
                tabsetPanel(
-                 tabPanel("Authomatic", verbatimTextOutput("filtering"), plotOutput("filteringP")),
-                 tabPanel("Manual", verbatimTextOutput("filteringM"), plotOutput("filteringmM")),
-                 tabPanel("Documentation", h3("Documentation" ))
+                 tabPanel("Authomatic",
+                          tabsetPanel(tabPanel("Console", verbatimTextOutput("filtering")),tabPanel("Graphic", plotOutput("filteringP")),tabPanel("Documentation"))
+                          
+                          ),
+                 tabPanel("Manual", 
+                          tabsetPanel(tabPanel("Console", verbatimTextOutput("filteringM")),tabPanel("Graphic", plotOutput("filteringmM")),tabPanel("Documentation"))        
+                          )
                )
         
                )
+             
+           )
+  ) ,
+  tabPanel("Interpolating",      
+           pageWithSidebar(
+             headerPanel("RHRV Project"),
+             sidebarPanel(
+               h3("Interpolating"),
+               numericInput("freqHR", "Freq_HR:", 4),
+               helpText("Freq_HR: Sampling frequency used in the interpolation. (Default: 4HZ)"),
+               textInput("methodInterpolation", "Method:", "spline"),
+               submitButton("Update View")
+               
+             ),
+             mainPanel(
+               #plotOutput("contents")
+               verbatimTextOutput("interpolate"),
+               
+               tabsetPanel(
+                 #tabPanel("Authomatic", verbatimTextOutput("filtering"), plotOutput("filteringP")),
+                 #tabPanel("Manual", verbatimTextOutput("filteringM"), plotOutput("filteringmM")),
+                 #tabPanel("Documentation", h3("Documentation" ))
+               )
+               
+             )
              
            )
   ) ,
@@ -85,7 +118,7 @@ shinyUI(navbarPage("RHRV Project",
              mainPanel(
                #plotOutput("contents")
                tabsetPanel(
-                 tabPanel("Time", verbatimTextOutput("timeanalysis")),
+                 tabPanel("Time", verbatimTextOutput("timeanalysisV"),tableOutput("timeanalysis")),
                  tabPanel("Frequency", verbatimTextOutput("fourierT"),plotOutput("fourier"), plotOutput("wavelet")),
                  tabPanel("Non Linear", h3("Documentation" ))
                )
