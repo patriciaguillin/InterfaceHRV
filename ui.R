@@ -15,30 +15,30 @@ shinyUI(navbarPage("RHRV Project",
           wellPanel(
             selectInput(inputId = "type",
                 label = "Select file type:",
-                choices = c("Ascii","RR","WFDB","Polar","Suunto","EDF+"),
-                selected = "Acii"
-            ),
-                  
-            uiOutput("options")
+                choices = c("Ascii" = "ascii","RR" = "rr","WFDB" = "wfdb","Polar" = "polar","Suunto" = "suunto","EDF+" = "edf"),
+                selected = "Ascii"
+            )
           ),
-                numericInput("timeScale", "Time scale:", 1),
-                #selectInput("timeScale",
-                #            label= "Time scale:", 
-                #            choices = c("Seconds","Tenths of a second","Hundredths of a second","Milisecond"), selected = 1),
-                helpText("Note: Seconds(1), Tenths of a second(0.1), Hundredths of a second(0.01), Milisecond(0.001)"),
-                dateInput("date", "Date:", value = "2012-04-30", format = "dd/mm/yyyy"),
-                #textInput("datyId", "Day:", "30"),
-                #textInput("monthId", "Month:", "04"),
-                #textInput("yearId", "Year:", "2014"),
-                textInput("hourId", "Hour:", "12"),
-                textInput("minuteId", "Minute:", "00"),
-                textInput("secondId", "Second:", "00"),
-                
-                submitButton("Update View")
+            
+           # conditionalPanel(
+            # condition = "input.type == 'ascii'",
+              selectInput(inputId = "timeScale",
+                          label = "Time scale:",
+                          choices = c("1","0.1","0.01","0.001"),
+                          selected = "1"
+              ),
+              helpText("Note: Seconds(1), Tenths of a second(0.1), Hundredths of a second(0.01), Milisecond(0.001)"),
+              dateInput("date", "Date:", value = "2012-04-30", format = "dd/mm/yyyy"),
+              textInput("hourId", "Hour:", "12"),
+              textInput("minuteId", "Minute:", "00"),
+              textInput("secondId", "Second:", "00"),
+              
+              submitButton("Update View")
+          #  )
+        ),
             
             
-            
-                ),
+              
               mainPanel(
                 #plotOutput("contents")
                 tabsetPanel(
@@ -72,7 +72,8 @@ shinyUI(navbarPage("RHRV Project",
                           ),
                  tabPanel("Manual", 
                           tabsetPanel(tabPanel("Console", verbatimTextOutput("filteringM")),tabPanel("Graphic", plotOutput("filteringmM")),tabPanel("Documentation"))        
-                          )
+                          ),
+                 tabPanel("Documentation", h5("What is the interpolation?"))
                )
         
                )
@@ -86,18 +87,23 @@ shinyUI(navbarPage("RHRV Project",
                h3("Interpolating"),
                numericInput("freqHR", "Freq_HR:", 4),
                helpText("Freq_HR: Sampling frequency used in the interpolation. (Default: 4HZ)"),
-               textInput("methodInterpolation", "Method:", "spline"),
+              # textInput("methodInterpolation", "Method:", "spline"),
+               selectInput(inputId = "methodInterpolation",
+                           label = "Time scale:",
+                           choices = c("spline","linear"),
+                           selected = "spline"
+               ),
                submitButton("Update View")
                
              ),
              mainPanel(
                #plotOutput("contents")
-               verbatimTextOutput("interpolate"),
+               
                
                tabsetPanel(
-                 #tabPanel("Authomatic", verbatimTextOutput("filtering"), plotOutput("filteringP")),
-                 #tabPanel("Manual", verbatimTextOutput("filteringM"), plotOutput("filteringmM")),
-                 #tabPanel("Documentation", h3("Documentation" ))
+                 tabPanel("Console", verbatimTextOutput("interpolate")),
+                 tabPanel("Graphic", plotOutput("interpolateGraphic")),
+                 tabPanel("Documentation", h3("Documentation" ))
                )
                
              )
@@ -109,9 +115,10 @@ shinyUI(navbarPage("RHRV Project",
              headerPanel("RHRV Project"),
              sidebarPanel(
                h3("Analysis"),
-               textInput("sizeId", "Size:", ""),
+               numericInput("sizeId", "Size:", 300),
                textInput("NumofbinsId", "Numofbins:", ""),
-               textInput("intervalId", "Interval:", "")
+               textInput("intervalId", "Interval:", ""),
+               submitButton("Update View")
      
                
              ),

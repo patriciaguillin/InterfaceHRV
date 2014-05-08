@@ -35,7 +35,7 @@ shinyServer(function(input, output) {
     Date <- paste(date.split[[1]][3],date.split[[1]][2],date.split[[1]][1],sep="/")
     dateTTime <- paste(Date, Time, sep = ' ')
     
-    hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = input$timeScale, datetime = dateTTime)
+    hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)
     
     hrv.data = BuildNIHR(hrv.data)
     PlotNIHR(hrv.data)
@@ -44,7 +44,7 @@ shinyServer(function(input, output) {
     output$summary <- renderPrint({
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
-      hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = input$timeScale, datetime = dateTTime)
+      hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)
       hrv.data = BuildNIHR(hrv.data)
       PlotNIHR(hrv.data)
     })
@@ -86,13 +86,16 @@ shinyServer(function(input, output) {
     #INTERPOLATING
     output$interpolate <- renderPrint({
       hrv.data = InterpolateNIHR (hrv.data, freqhr = input$freqHR, method = input$methodInterpolation)
-      
+      output$interpolateGraphic <- renderPlot({
+        hrv.data = PlotNIHR(hrv.data)
+      })
     })
         
     
     #ANALYSIS -> TIME
-    hr <- CreateTimeAnalysis(hrv.data)
+   
     output$timeanalysisV <- renderPrint({
+      hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=NULL, interval=7.8125, verbose=NULL)
       print("Size of window:") 
       print(hr$TimeAnalysis[[1]]$size)
       
