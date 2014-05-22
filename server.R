@@ -3,13 +3,10 @@
 library(shiny)
 library(RHRV)
 
+
 shinyServer(function(input, output) {
   
-  
-  datasetInput <- reactive({
-    
-  })
-
+  #TYPE FILE
   
   #LOADING FILE -> GRAPHIC
   output$contents <- renderPlot({
@@ -42,54 +39,92 @@ shinyServer(function(input, output) {
     
     #LOADING FILE -> CONSOLE
     output$summary <- renderPrint({
+      print("CreateHRVData()")
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
+      print("LoadBeatAscii()")
+      input$timeScale
+      
       hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)
+      print("BuildNIHR()")
       hrv.data = BuildNIHR(hrv.data)
+      print("PlotNIHR()")
       PlotNIHR(hrv.data)
     })
     
     #LOADING FILE -> DOCUMENTATION
     #(nada que mostrar por ahora)
-    output$documentationLoading <- renderPrint({
-      print(?CreateHRVData)
-      print(?LoadBeatAscii)
-      print(?BuildNIHR)
-      print(?PlotNIHR)
-      
+    output$documentationLoading <- renderText({
+ 
+      help(CreateHRVData)
+      #?LoadBeatAscii
+    #  ?BuildNIHR
+     # ?PlotNIHR
     })
     
-    
     #FILTERING -> AUTHOMATIC
-    
-    output$filtering <- renderPrint({
-      hrv.data = FilterNIHR(hrv.data)
+    output$filteringpP <- renderPrint({
+      file.name <- tempfile("filteringAuthomatic")
+      sink(file=file.name)
+      #long=input$longF ,last=input$lastF ,minbpm=input$minbpmF ,maxbpm=input$maxbpmF)
+      hrv.data <- FilterNIHR(hrv.data, long=input$longF ,last=input$lastF ,minbpm=input$minbpmF ,maxbpm=input$maxbpmF)
+      sink()
       output$filteringP <- renderPlot({
-        PlotNIHR(hrv.data)
-      })
+      
+     
+      PlotNIHR(hrv.data)
+        output$filtering <- renderPrint({
+          out.filtering.authomatic <- readLines(file.name, n = 10)
+          for (i in 1:length(out.filtering.authomatic ) ){
+            cat( out.filtering.authomatic[[i]], "\n")
+          }
+          success <- file.remove(file.name)
+    })
+    })
     })
     
     
     
     
     #FILTERING -> MANUAL
-    output$filteringM <- renderPrint({
-      hrv.data = EditNIHR(hrv.data)
-      #hrv.dataa = hrv.data
+    output$fiteringmmM <- renderPrint({
+      file.name <- tempfile("filteringManual")
+      sink(file=file.name)
+      hrv.data <- EditNIHR(hrv.data)
+      sink()
       output$filteringmM <- renderPlot({
         PlotNIHR(hrv.data)
+          output$filteringM <- renderPrint({
+            out.filtering.manual <- readLines(file.name, n = 100)
+            for (i in 1:length(out.filtering.manual ) ){
+              cat( out.filtering.manual[[i]], "\n")
+            }
+            success <- file.remove(file.name)
+         })
       })
+
     })
    
  
     
     #INTERPOLATING
-    output$interpolate <- renderPrint({
-      hrv.data = InterpolateNIHR (hrv.data, freqhr = input$freqHR, method = input$methodInterpolation)
-      output$interpolateGraphic <- renderPlot({
-        hrv.data = PlotNIHR(hrv.data)
+    output$interpolateGraphic <- renderPlot({
+      file.name <- tempfile("interpolating")
+      sink(file=file.name)
+      hrv.data <- InterpolateNIHR (hrv.data, freqhr = input$freqHR, method = input$methodInterpolation)
+      sink()
+        PlotNIHR(hrv.data)
+      output$interpolate <- renderPrint({
+          out.interpolating <- readLines(file.name, n = 100)
+          for (i in 1:length(out.interpolating ) ){
+            cat( out.interpolating[[i]], "\n")
+          }
+          success <- file.remove(file.name)
+      
       })
+      
     })
+
         
     
     #ANALYSIS -> TIME
