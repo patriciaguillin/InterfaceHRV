@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Estimate an appropiate time lag for the Takens' vectors</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for CalculateTimeLag {RHRV}"><tr><td>CalculateTimeLag {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Estimate an appropiate time lag for the Takens' vectors</h2>
+
+<h3>Description</h3>
+
+<p>Given a time series (timeSeries), an embedding dimension
+(m) and a time lag (timeLag), the <i>n^{th}</i> Takens'
+vector is defined as </p>
+<p align="center"><i>T[n]={timeSeries[n],
+  timeSeries[n+ timeLag],...timeSeries[n+m*timeLag]}.</i></p>
+<p> This
+function estimates an appropiate time lag by using the
+autocorrelation function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  CalculateTimeLag(HRVData, method = "first.e.decay",
+    value = 1/exp(1), lagMax = NULL, doPlot = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>The method that we shall use to estimate
+the time lag (see the Details section). Available methods
+are <EM>&quot;first.zero&quot;</EM>, <EM>&quot;first.e.decay&quot;</EM>,
+<EM>&quot;first.minimum&quot;</EM> and <EM>&quot;first.value&quot;</EM>.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Numeric value indicating the value that the
+autocorrelation function must cross in order to select
+the time lag. It is used only with the &quot;first.value&quot;
+method.</p>
+</td></tr>
+<tr valign="top"><td><code>lagMax</code></td>
+<td>
+<p>Maximum lag at which to calculate the acf.
+By default, the length of the timeSeries is used.</p>
+</td></tr>
+<tr valign="top"><td><code>doPlot</code></td>
+<td>
+<p>Logical value. If TRUE (default value), a
+plot of the autocorrelation function is shown.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A basic criteria for estimating a proper time lag is
+based on the following reasoning: if the time lag used to
+build the Takens' vectors is too small, the coordinates
+will be too highly temporally correlated and the
+embedding will tend to cluster around the diagonal in the
+phase space. If the time lag is chosen too large, the
+resulting coordinates may be almost uncorrelated and the
+resulting embedding will be very complicated.  Thus,
+there is a wide variety of methods for estimating an
+appropiate time lag based on the study of the
+autocorrelation function of a given time series:
+</p>
+ <ul>
+<li><p> Select the time lag where the
+autocorrelation function decays to 0 (first.zero method).
+</p>
+</li>
+<li><p> Select the time lag where the autocorrelation
+function decays to 1/e (first.e.decay method).  </p>
+</li>
+<li>
+<p>Select the time lag where the autocorrelation function
+reaches its first minimum (first.minimum method).  </p>
+</li>
+<li>
+<p>Select the time lag where the autocorrelation function
+decays to the value specified by the user (first.value
+method and value parameter). </p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>The estimated time lag.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If the autocorrelation function does not cross the
+specifiged value, an error is thrown. This may be solved
+by increasing the lag.max or selecting a higher value to
+which the autocorrelation function must decay.
+</p>
+<p>This function is based on the
+<code><a href="../../nonlinearTseries/html/timeLag.html">timeLag</a></code> function from the
+nonlinearTseries package.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Constantino A. Garcia
+</p>
+
+
+<h3>References</h3>
+
+<p>H. Kantz and T. Schreiber: Nonlinear Time series Analysis
+(Cambridge university press)
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../nonlinearTseries/html/timeLag.html">timeLag</a></code>.
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

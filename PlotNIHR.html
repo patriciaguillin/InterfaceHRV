@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Simple plot of non-interpolated heart rate</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for PlotNIHR {RHRV}"><tr><td>PlotNIHR {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2> Simple plot of non-interpolated heart rate </h2>
+
+<h3>Description</h3>
+
+<p>Plots in a simple way the non-interpolated instantaneous heart rate signal
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+PlotNIHR(HRVData, Tag = NULL, verbose=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p> Data structure that stores the beats register and information related to it </p>
+</td></tr>
+<tr valign="top"><td><code>Tag</code></td>
+<td>
+<p> List of tags to specify which episodes, as apnoea or oxygen desaturation, are included in the plot. Tag=&quot;all&quot; plots all episodes present in the data. </p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p> Deprecated argument maintained for compatibility, use SetVerbose() instead </p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>M. Lado, A. Mendez, D. Olivieri, L. Rodriguez, X. Vila
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, L., A.J. Mendez, M.J. Lado, D.N. Olivieri, X.A. Vila, and I. Gomez-Conde, &quot;An open source tool for heart rate variability spectral analysis&quot;, Computer Methods and Programs in Biomedicine 103(1):39-50, july 2011.
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

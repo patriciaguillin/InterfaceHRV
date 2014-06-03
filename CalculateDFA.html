@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Detrended Fluctuation Analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for CalculateDFA {RHRV}"><tr><td>CalculateDFA {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Detrended Fluctuation Analysis</h2>
+
+<h3>Description</h3>
+
+<p>Performs Detrended Fluctuation Analysis (DFA) on the RR
+time series, a widely used technique for detecting long
+range correlations in time series. These functions are
+able to estimate several scaling exponents from the time
+series being analyzed. These scaling exponents
+characterize short or long-term fluctuations, depending
+of the range used for regression (see details).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  CalculateDFA(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    windowSizeRange = c(10, 300), npoints = 25,
+    doPlot = TRUE)
+
+  EstimateDFA(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    regressionRange = NULL, doPlot = TRUE)
+
+  PlotDFA(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it</p>
+</td></tr>
+<tr valign="top"><td><code>indexNonLinearAnalysis</code></td>
+<td>
+<p>Reference to the data
+structure that will contain the nonlinear analysis</p>
+</td></tr>
+<tr valign="top"><td><code>windowSizeRange</code></td>
+<td>
+<p>Range of values for the windows
+size that will be used to estimate the fluctuation
+function. Default: c(10,300).</p>
+</td></tr>
+<tr valign="top"><td><code>npoints</code></td>
+<td>
+<p>The number of different window sizes that
+will be used to estimate the Fluctuation function in each
+zone.</p>
+</td></tr>
+<tr valign="top"><td><code>doPlot</code></td>
+<td>
+<p>logical value. If TRUE (default value), a
+plot of the Fluctuation function is shown.</p>
+</td></tr>
+<tr valign="top"><td><code>regressionRange</code></td>
+<td>
+<p>Vector with 2 components denoting
+the range where the function will perform linear
+regression</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional plot parameters.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Detrended Fluctuation Analysis (DFA) has become a
+widely used technique for detecting long range
+correlations in time series. The DFA procedure may be
+summarized as follows: </p>
+ <ol>
+<li><p> Integrate the
+time series to be analyzed. The time series resulting
+from the integration will be referred to as the profile.
+</p>
+</li>
+<li><p> Divide the profile into N non-overlapping segments.
+</p>
+</li>
+<li><p> Calculate the local trend for each of the segments
+using least-square regression.  Compute the total error
+for each of the segments.  </p>
+</li>
+<li><p> Compute the average of
+the total error over all segments and take its root
+square. By repeating the previous steps for several
+segment sizes (let's denote it by t), we obtain the
+so-called Fluctuation function <i>F(t)</i>.  </p>
+</li>
+<li><p> If the
+data presents long-range power law correlations:
+<i>F(t) proportional t^alpha</i> and
+we may estimate using regression.  </p>
+</li>
+<li><p> Usually, when
+plotting <i>log(F(t)) Vs
+  log(t)</i> we may distinguish two linear regions.  By
+regression them separately, we obtain two scaling
+exponents, <EM><i>alpha1</i></EM> (characterizing
+short-term fluctuations) and
+<EM><i>alpha2</i></EM> (characterizing long-term
+fluctuations). </p>
+</li></ol>
+<p> Steps 1-4 are performed using the
+<EM>CalculateDFA</EM> function. In order to obtain a
+estimate of some scaling exponent, the user must use the
+<EM>EstimateDFA</EM> function specifying the regression
+range (window sizes used to detrend the series).
+<EM><i>alpha1</i></EM> is usually obtained by
+performing the regression in the <i>3&lt;t&lt;17</i> range
+wheras that <EM><i>alpha2</i></EM> is obtained in
+the <i>15&lt;t&lt;65</i> range (However the F(t) function must
+be linear in these ranges for obtaining reliable
+results).
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <EM>CalculateDFA</EM> returns a HRVData structure
+containing the computations of the Fluctuation function
+of the RR time series under the <EM>NonLinearAnalysis</EM>
+list.
+</p>
+<p>The <EM>EstimateDFA</EM> function estimates an scaling
+exponent of the RR time series by performing a linear
+regression over the time steps' range specified in
+<EM>regressionRange</EM>. If <EM>doPlot</EM> is TRUE, a
+graphic of the regression over the data is shown. In
+order to run <EM>EstimateDFA</EM>, it is necessary to have
+performed the Fluctuation function computations before
+with <EM>ComputeDFA</EM>. The results are returned into the
+<EM>HRVData</EM> structure, under the
+<EM>NonLinearAnalysis</EM> list. Since it is possible to
+estimate several scaling exponents, depending on the
+regression range used, the scaling exponents are also
+stored into a list.
+</p>
+<p><EM>PlotDFA</EM> shows a graphic of the Fluctuation
+functions vs window's sizes.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is based on the
+<code><a href="../../nonlinearTseries/html/dfa.html">dfa</a></code> function from the
+nonlinearTseries package.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Constantino A. Garcia
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../nonlinearTseries/html/dfa.html">dfa</a></code>
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

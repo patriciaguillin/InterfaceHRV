@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Recurrence Quantification Analysis (RQA)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for RQA {RHRV}"><tr><td>RQA {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Recurrence Quantification Analysis (RQA)</h2>
+
+<h3>Description</h3>
+
+<p>The Recurrence Quantification Analysis (RQA) is an
+advanced technique for the nonlinear analysis that allows
+to quantify the number and duration of the recurrences in
+the phase space. This function computes the RQA of the RR
+time series.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  RQA(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    numberPoints = NULL, embeddingDim = NULL,
+    timeLag = NULL, radius = 1, lmin = 2, vmin = 2,
+    distanceToBorder = 2, doPlot = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it</p>
+</td></tr>
+<tr valign="top"><td><code>indexNonLinearAnalysis</code></td>
+<td>
+<p>Reference to the data
+structure that will contain the nonlinear analysis</p>
+</td></tr>
+<tr valign="top"><td><code>numberPoints</code></td>
+<td>
+<p>Number of points from the RR time
+series to be used in the RQA computation. If the number
+of points is not specified, the whole RR time series is
+used.</p>
+</td></tr>
+<tr valign="top"><td><code>embeddingDim</code></td>
+<td>
+<p>Integer denoting the dimension in
+which we shall embed the RR time series.</p>
+</td></tr>
+<tr valign="top"><td><code>timeLag</code></td>
+<td>
+<p>Integer denoting the number of time steps
+that will be use to construct the Takens' vectors.</p>
+</td></tr>
+<tr valign="top"><td><code>radius</code></td>
+<td>
+<p>Maximum distance between two phase-space
+points to be considered a recurrence.</p>
+</td></tr>
+<tr valign="top"><td><code>lmin</code></td>
+<td>
+<p>Minimal length of a diagonal line to be
+considered in the RQA. Default <EM>lmin</EM> = 2.</p>
+</td></tr>
+<tr valign="top"><td><code>vmin</code></td>
+<td>
+<p>Minimal length of a vertical line to be
+considered in the RQA. Default <EM>vmin</EM> = 2.</p>
+</td></tr>
+<tr valign="top"><td><code>distanceToBorder</code></td>
+<td>
+<p>In order to avoid border effects,
+the <EM>distanceToBorder</EM> points near the border of the
+recurrence matrix are ignored when computing the RQA
+parameters. Default, <EM>distanceToBorder</EM> = 2.</p>
+</td></tr>
+<tr valign="top"><td><code>doPlot</code></td>
+<td>
+<p>Logical. If TRUE, the recurrence plot is
+shown. However, plotting the recurrence matrix is
+computationally expensive. Use with caution.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A HRVData structure that stores an <EM>rqa</EM> field under
+the NonLinearAnalysis list. The <EM>rqa</EM> field consist
+of a list with the most important RQA parameters:
+</p>
+ <ul>
+<li> <p><EM>REC</EM>: Recurrence. Percentage of
+recurrence points in a Recurrence Plot.  </p>
+</li>
+<li>
+<p><EM>DET</EM>: Determinism. Percentage of recurrence points
+that form diagonal lines.  </p>
+</li>
+<li> <p><EM>LAM</EM>: Percentage
+of recurrent points that form vertical lines.  </p>
+</li>
+<li>
+<p><EM>RATIO</EM>: Ratio between <EM>DET</EM> and <EM>RR</EM>.
+</p>
+</li>
+<li> <p><EM>Lmax</EM>: Length of the longest diagonal line.
+</p>
+</li>
+<li> <p><EM>Lmean</EM>: Mean length of the diagonal lines.
+The main diagonal is not taken into account.  </p>
+</li>
+<li>
+<p><EM>DIV</EM>: Inverse of <EM>Lmax</EM>.  </p>
+</li>
+<li> <p><EM>Vmax</EM>:
+Longest vertical line.  </p>
+</li>
+<li> <p><EM>Vmean</EM>: Average
+length of the vertical lines. This parameter is also
+referred to as the Trapping time.  </p>
+</li>
+<li> <p><EM>ENTR</EM>:
+Shannon entropy of the diagonal line lengths distribution
+</p>
+</li>
+<li> <p><EM>TREND</EM>: Trend of the number of recurrent
+points depending on the distance to the main diagonal
+</p>
+</li>
+<li> <p><EM>diagonalHistogram</EM>: Histogram of the length
+of the diagonals.  </p>
+</li>
+<li> <p><EM>recurrenceRate</EM>: Number of
+recurrent points depending on the distance to the main
+diagonal. </p>
+</li></ul>
+
+
+
+<h3>Note</h3>
+
+<p>This function is based on the
+<code><a href="../../nonlinearTseries/html/rqa.html">rqa</a></code> function from the
+nonlinearTseries package.
+</p>
+
+
+<h3>References</h3>
+
+<p>Zbilut, J. P. and C. L. Webber. Recurrence quantification
+analysis. Wiley Encyclopedia of Biomedical Engineering
+(2006).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../nonlinearTseries/html/rqa.html">rqa</a></code>,
+<code><a href="RecurrencePlot.html">RecurrencePlot</a></code>
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

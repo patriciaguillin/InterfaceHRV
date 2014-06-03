@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Builds the instantaneous heart rate signal from a beat...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for BuildNIHR {RHRV}"><tr><td>BuildNIHR {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2> Builds the instantaneous heart rate signal from a beat position array </h2>
+
+<h3>Description</h3>
+
+<p>The instantaneous heart rate can be defined as the inverse of the time separation between two consecutive heart beats. Once the beats have been identified, and since the only valid values contributing to the heart rate signal are the corresponding to normal beats preceded by other normal beats, a further operation should be performed for the calculation of the instantaneous heart rate.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+BuildNIHR(HRVData, verbose=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p> Data structure that stores the beats register and information related to it </p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p> Deprecated argument maintained for compatibility, use SetVerbose() instead </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns HRVData, the structure that contains beat positions register and now associated heart rate instantaneous values also
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>M. Lado, A. Mendez, D. Olivieri, L. Rodriguez, X. Vila
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, X. Vila, A. Mendez, M. Lado, D. Olivieri, &quot;RHRV: An R-based software package for heart rate variability analysis of ECG recordings,&quot; 3rd Iberian Conference in Systems and Information Technologies (CISTI 2008), Proceedings I, 565-573 (2008)
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

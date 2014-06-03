@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Recurrence Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for RecurrencePlot {RHRV}"><tr><td>RecurrencePlot {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Recurrence Plot</h2>
+
+<h3>Description</h3>
+
+<p>Plot the recurrence matrix of the RR time series.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  RecurrencePlot(HRVData, numberPoints = 1000,
+    embeddingDim = NULL, timeLag = NULL, radius = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it</p>
+</td></tr>
+<tr valign="top"><td><code>numberPoints</code></td>
+<td>
+<p>Number of points from the RR time
+series to be used in the RQA computation. Default: 1000
+heartbeats.</p>
+</td></tr>
+<tr valign="top"><td><code>embeddingDim</code></td>
+<td>
+<p>Integer denoting the dimension in
+which we shall embed the RR time series.</p>
+</td></tr>
+<tr valign="top"><td><code>timeLag</code></td>
+<td>
+<p>Integer denoting the number of time steps
+that will be use to construct the Takens' vectors.</p>
+</td></tr>
+<tr valign="top"><td><code>radius</code></td>
+<td>
+<p>Maximum distance between two phase-space
+points to be considered a recurrence.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>WARNING: This function is computationally very expensive.
+Use with caution.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is based on the
+<code><a href="../../nonlinearTseries/html/recurrencePlot.html">recurrencePlot</a></code> function
+from the nonlinearTseries package.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Constantino A. Garcia
+</p>
+
+
+<h3>References</h3>
+
+<p>Zbilut, J. P. and C. L. Webber. Recurrence quantification
+analysis. Wiley Encyclopedia of Biomedical Engineering
+(2006).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../nonlinearTseries/html/recurrencePlot.html">recurrencePlot</a></code>,
+<code><a href="RQA.html">RQA</a></code>
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

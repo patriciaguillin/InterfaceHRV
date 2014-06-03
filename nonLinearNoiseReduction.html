@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Nonlinear noise reduction</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for NonLinearNoiseReduction {RHRV}"><tr><td>NonLinearNoiseReduction {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Nonlinear noise reduction</h2>
+
+<h3>Description</h3>
+
+<p>Function for denoising the RR time series using nonlinear
+analysis techniques.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  NonLinearNoiseReduction(HRVData, embeddingDim = NULL,
+    radius = NULL, ECGsamplingFreq = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it</p>
+</td></tr>
+<tr valign="top"><td><code>embeddingDim</code></td>
+<td>
+<p>Integer denoting the dimension in
+which we shall embed the RR time series.</p>
+</td></tr>
+<tr valign="top"><td><code>radius</code></td>
+<td>
+<p>The radius used to looking for neighbours
+in the phase space (see details). If the radius is not
+specified, a radius depending on the resolution of the RR
+time series is used. The resolution depends on the
+<EM>ECGsamplingFreq</EM> parameter. If the
+<EM>ECGsamplingFreq</EM> is not supplied, a resolution of 1
+ms is assumed.</p>
+</td></tr>
+<tr valign="top"><td><code>ECGsamplingFreq</code></td>
+<td>
+<p>The sampling frequency of the ECG
+from which the RR time series was derived. Although it is
+not necessary, if it is provided it may improve the noise
+reduction.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function takes the RR time series and denoises it.
+The denoising is achieved by averaging each Takens'
+vector in an m-dimensional space with his neighbours
+(time lag=1). Each neighbourhood is specified with balls
+of a given radius (max norm is used).
+</p>
+
+
+<h3>Value</h3>
+
+<p>A HRVData structure containing the denoised RR time
+series.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is based on the
+<code><a href="../../nonlinearTseries/html/nonLinearNoiseReduction.html">nonLinearNoiseReduction</a></code>
+function from the nonlinearTseries package.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Constantino A. Garcia
+</p>
+
+
+<h3>References</h3>
+
+<p>H. Kantz and T. Schreiber: Nonlinear Time series Analysis
+(Cambridge university press)
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../nonlinearTseries/html/nonLinearNoiseReduction.html">nonLinearNoiseReduction</a></code>
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

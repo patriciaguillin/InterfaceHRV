@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Imports data from a record in WFDB format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for LoadBeatWFDB {RHRV}"><tr><td>LoadBeatWFDB {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2> Imports data from a record in WFDB format </h2>
+
+<h3>Description</h3>
+
+<p>Basically, this algorithm reads the annotation file for the ECG register, and stores the information obtained in a data structure.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+LoadBeatWFDB(HRVData, RecordName, RecordPath = ".", annotator = "qrs", 
+		verbose=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p> Data structure that stores the beats register and information related to it </p>
+</td></tr>
+<tr valign="top"><td><code>RecordName</code></td>
+<td>
+<p> The WFDB file to be used </p>
+</td></tr>
+<tr valign="top"><td><code>RecordPath</code></td>
+<td>
+<p> The path of the file </p>
+</td></tr>
+<tr valign="top"><td><code>annotator</code></td>
+<td>
+<p> The extension of the file </p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p> Deprecated argument maintained for compatibility, use SetVerbose() instead </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns HRVData, the structure that contains beat positions register
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>I. Garcia
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, X. Vila, A. Mendez, M. Lado, D. Olivieri, &quot;RHRV: An R-based software package for heart rate variability analysis of ECG recordings,&quot; 3rd Iberian Conference in Systems and Information Technologies (CISTI 2008), Proceedings I, 565-573, ISBN: 978-84-612-4476-8 (2008)
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

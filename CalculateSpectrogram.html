@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Calculates the spectrogram of a signal</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for CalculateSpectrogram {RHRV}"><tr><td>CalculateSpectrogram {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2> Calculates the spectrogram of a signal </h2>
+
+<h3>Description</h3>
+
+<p>Calculates the spectrogram of the heart rate signal after filtering and 
+interpolation in a window of a certain size 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+CalculateSpectrogram(HRVData, size, shift, sizesp = 1024, verbose=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p> Data structure that stores the beats register and information
+related to it </p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p> Size of window for calculating spectrogram (seconds) </p>
+</td></tr>
+<tr valign="top"><td><code>shift</code></td>
+<td>
+<p> Displacement of window for calculating spectrogram (seconds) </p>
+</td></tr>
+<tr valign="top"><td><code>sizesp</code></td>
+<td>
+<p> Points for calculating spectrogram (zero padding) </p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p> Deprecated argument maintained for compatibility, use
+SetVerbose() instead </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns the spectrogram of the heart rate signal
+</p>
+
+
+<h3>Note</h3>
+
+<p>An example including all the necessary steps to obtain the spectrogram<br>
+of a wfdb register is giving below:<br>
+</p>
+<p>##Reading a wfdb register and storing into a data structure:<br>
+md = CreateHRVData(Verbose = TRUE)<br>
+md = LoadBeatWFDB(md, RecordName = &quot;register_name&quot;, <br>
+RecordPath = &quot;register_path&quot;, verbose = TRUE)<br>
+</p>
+<p>##Calculating heart rate signal:<br>
+md = BuildNIHR(md)<br>
+</p>
+<p>##Filtering heart rate signal:<br>
+md = FilterNIHR(md)<br>
+</p>
+<p>##Interpolating heart rate signal:<br>
+md = InterpolateNIHR(md)<br>
+</p>
+<p>##Calculating spectrogram:<br>
+CalculateSpectrogram(md, size = 120, shift = 10, sizesp = 1024)<br>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>M. Lado, A. Mendez, D. Olivieri, L. Rodriguez, X. Vila
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, X. Vila, A. Mendez, M. Lado, D. Olivieri, &quot;RHRV: An 
+R-based software package for heart rate variability analysis of ECG recordings,&quot;
+3rd Iberian Conference in Systems and Information Technologies (CISTI 2008),
+Proceedings I, 565-573, ISBN: 978-84-612-4476-8 (2008)
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Maximum lyapunov exponent</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for CalculateMaxLyapunov {RHRV}"><tr><td>CalculateMaxLyapunov {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Maximum lyapunov exponent</h2>
+
+<h3>Description</h3>
+
+<p>Functions for estimating the maximal Lyapunov exponent of
+the RR time series.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  CalculateMaxLyapunov(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    minEmbeddingDim = NULL, maxEmbeddingDim = NULL,
+    timeLag = NULL, radius = 2, theilerWindow = 100,
+    minNeighs = 5, minRefPoints = 500,
+    numberTimeSteps = 20, doPlot = TRUE)
+
+  EstimateMaxLyapunov(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    regressionRange = NULL, useEmbeddings = NULL,
+    doPlot = TRUE)
+
+  PlotMaxLyapunov(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it</p>
+</td></tr>
+<tr valign="top"><td><code>indexNonLinearAnalysis</code></td>
+<td>
+<p>Reference to the data
+structure that will contain the nonlinear analysis</p>
+</td></tr>
+<tr valign="top"><td><code>minEmbeddingDim</code></td>
+<td>
+<p>Integer denoting the minimum
+dimension in which we shall embed the time series</p>
+</td></tr>
+<tr valign="top"><td><code>maxEmbeddingDim</code></td>
+<td>
+<p>Integer denoting the maximum
+dimension in which we shall embed the time series. Thus,
+we shall estimate the correlation dimension between
+<EM>minEmbeddingDim</EM> and <EM>maxEmbeddingDim</EM>.</p>
+</td></tr>
+<tr valign="top"><td><code>timeLag</code></td>
+<td>
+<p>Integer denoting the number of time steps
+that will be use to construct the Takens' vectors.
+Default: timeLag = 1</p>
+</td></tr>
+<tr valign="top"><td><code>radius</code></td>
+<td>
+<p>Maximum distance in which will look for
+nearby trajectories. Default: radius = 2</p>
+</td></tr>
+<tr valign="top"><td><code>theilerWindow</code></td>
+<td>
+<p>Integer denoting the Theiler window:
+Two Takens' vectors must be separated by more than
+<EM>theilerWindow</EM> time steps in order to be considered
+neighbours. By using a Theiler window, temporally
+correlated vectors are excluded from the estimations.
+Default: theilerWindow = 100</p>
+</td></tr>
+<tr valign="top"><td><code>minNeighs</code></td>
+<td>
+<p>Minimum number of neighbours that a
+Takens' vector must have to be considered a reference
+point. Default: minNeighs = 5</p>
+</td></tr>
+<tr valign="top"><td><code>minRefPoints</code></td>
+<td>
+<p>Number of reference points that the
+routine will try to use. The routine stops when it finds
+<EM>minRefPoints</EM> reference points, saving computation
+time. Default: minRefPoints = 500</p>
+</td></tr>
+<tr valign="top"><td><code>numberTimeSteps</code></td>
+<td>
+<p>Integer denoting the number of
+time steps in which the algorithm will compute the
+divergence.</p>
+</td></tr>
+<tr valign="top"><td><code>doPlot</code></td>
+<td>
+<p>Logical value. If TRUE (default value), a
+plot of <i>S(t)</i> Vs <i>t</i> is shown.</p>
+</td></tr>
+<tr valign="top"><td><code>regressionRange</code></td>
+<td>
+<p>Vector with 2 components denoting
+the range where the function will perform linear
+regression</p>
+</td></tr>
+<tr valign="top"><td><code>useEmbeddings</code></td>
+<td>
+<p>A numeric vector specifying which
+embedding dimensions should the algorithm use to compute
+the maximal Lyapunov exponent.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional plot parameters.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It is a well-known fact that close trajectories diverge
+exponentially fast in a chaotic system. The averaged
+exponent that determines the divergence rate is called
+the Lyapunov exponent (usually denoted with
+<i>lambda</i>). If <i>delta(0)</i> is
+the distance between two Takens' vectors in the
+embedding.dim-dimensional space, we expect that the
+distance after a time <i>t</i> between the two
+trajectories arising from this two vectors fulfills:
+</p>
+<p align="center"><i>&delta; (n) is.approximately &delta; (0) exp(&lambda;
+  *t).</i></p>
+<p> The lyapunov exponent is estimated using the slope
+obtained by performing a linear regression of
+<i>S(t)=&lambda; *t is.approximately log(&delta;
+  (t)/&delta; (0))</i> on <i>t</i>. <i>S(t)</i> will be estimated
+by averaging the divergence of several reference points.
+</p>
+<p>The user should plot <i>S(t) Vs t</i> when looking for the
+maximal lyapunov exponent and, if for some temporal range
+<i>S(t)</i> shows a linear behaviour, its slope is an
+estimate of the maximal Lyapunov exponent per unit of
+time. The estimate routine allows the user to get always
+an estimate of the maximal Lyapunov exponent, but the
+user must check that there is a linear region in the
+<i>S(t) Vs t</i>. If such a region does not exist, the
+estimation should be discarded.  The user should also run
+the method for different embedding dimensions for
+checking if <i>D1</i> saturates.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <EM>CalculateMaxLyapunov</EM> returns a HRVData
+structure containing the divergence computations of the
+RR time series under the <EM>NonLinearAnalysis</EM> list.
+</p>
+<p>The <EM>EstimateMaxLyapunov</EM> function estimates the
+maximum Lyapunov exponent of the RR time series by
+performing a linear regression over the time steps' range
+specified in <EM>regressionRange</EM>.If <EM>doPlot</EM> is
+TRUE, a graphic of the regression over the data is shown.
+The results are returned into the <EM>HRVData</EM>
+structure, under the <EM>NonLinearAnalysis</EM> list.
+</p>
+<p><EM>PlotMaxLyapunov</EM> shows a graphic of the divergence
+Vs time
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is based on the
+<code><a href="../../nonlinearTseries/html/maxLyapunov.html">maxLyapunov</a></code> function from
+the nonlinearTseries package.
+</p>
+<p>In order to run <EM>EstimateMaxLyapunov</EM>, it is
+necessary to have performed the divergence computations
+before with <EM>ComputeMaxLyapunov</EM>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Constantino A. Garcia
+</p>
+
+
+<h3>References</h3>
+
+<p>Eckmann, Jean-Pierre and Kamphorst, S Oliffson and
+Ruelle, David and Ciliberto, S and others. Liapunov
+exponents from time series. Physical Review A, 34-6,
+4971&ndash;4979, (1986).
+</p>
+<p>Rosenstein, Michael T and Collins, James J and De Luca,
+Carlo J.A practical method for calculating largest
+Lyapunov exponents from small data sets. Physica D:
+Nonlinear Phenomena, 65-1, 117&ndash;134, (1993).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../nonlinearTseries/html/maxLyapunov.html">maxLyapunov</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# ...
+hrv.data = CreateNonLinearAnalysis(hrv.data)
+hrv.data = CalculateMaxLyapunov(hrv.data,indexNonLinearAnalysis=1,
+                                 minEmbeddingDim=5,
+                                 maxEmbeddingDim = 5,
+                                 timeLag=1,radius=10,
+                                 theilerWindow=100, doPlot=FALSE)
+PlotMaxLyapunov(hrv.data,indexNonLinearAnalysis=1)
+hrv.data = EstimateMaxLyapunov(hrv.data,indexNonLinearAnalysis=1,
+                               regressionRange=c(1,10))
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Creates data analysis structure for time analysis...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for CreateTimeAnalysis {RHRV}"><tr><td>CreateTimeAnalysis {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2> Creates data analysis structure for time analysis calculations </h2>
+
+<h3>Description</h3>
+
+<p>Creates data analysis structure that stores the information extracted from a time analysis of ECG signal and joins it to HRVData as a member of a list</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+CreateTimeAnalysis(HRVData, size=300, numofbins=NULL, interval=7.8125, verbose=NULL )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p> Data structure that stores the beats register and information related to it </p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p> Size of window (seconds) </p>
+</td></tr>
+<tr valign="top"><td><code>numofbins</code></td>
+<td>
+<p> Number of bins in histogram. If it is not specified, the interval parameter is used (default)</p>
+</td></tr>
+<tr valign="top"><td><code>interval</code></td>
+<td>
+<p> Width of bins in histogram (milliseconds)</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p> Deprecated argument maintained for compatibility, use SetVerbose() instead </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns HRVData, the structure that contains beat positions register, associated heart rate instantaneous values, filtered heart rate signal equally spaced, and a new analysis structure as a member of a list
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>M. Lado, A. Mendez, D. Olivieri, L. Rodriguez, X. Vila
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, X. Vila, A. Mendez, M. Lado, D. Olivieri, &quot;RHRV: An R-based software package for heart rate variability analysis of ECG recordings,&quot; 3rd Iberian Conference in Systems and Information Technologies (CISTI 2008), Proceedings I, 565-573, ISBN: 978-84-612-4476-8 (2008)
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="CreateHRVData.html">CreateHRVData</a></code>  </p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

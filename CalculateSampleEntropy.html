@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Sample Entropy (also known as Kolgomorov-Sinai Entropy)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for CalculateSampleEntropy {RHRV}"><tr><td>CalculateSampleEntropy {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Sample Entropy (also known as Kolgomorov-Sinai Entropy)</h2>
+
+<h3>Description</h3>
+
+<p>These functions measure the complexity of the RR time
+series. Large values of the Sample Entropy indicate high
+complexity whereas that smaller values characterize more
+regular signals.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  CalculateSampleEntropy(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    doPlot = TRUE)
+
+  EstimateSampleEntropy(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    regressionRange = NULL, useEmbeddings = NULL,
+    doPlot = TRUE)
+
+  PlotSampleEntropy(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it</p>
+</td></tr>
+<tr valign="top"><td><code>indexNonLinearAnalysis</code></td>
+<td>
+<p>Reference to the data
+structure that will contain the nonlinear analysis</p>
+</td></tr>
+<tr valign="top"><td><code>doPlot</code></td>
+<td>
+<p>Logical value. If TRUE (default), a plot of
+the correlation sum is shown</p>
+</td></tr>
+<tr valign="top"><td><code>regressionRange</code></td>
+<td>
+<p>Vector with 2 components denoting
+the range where the function will perform linear
+regression</p>
+</td></tr>
+<tr valign="top"><td><code>useEmbeddings</code></td>
+<td>
+<p>A numeric vector specifying which
+embedding dimensions should the algorithm use to compute
+the sample entropy.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional plot parameters.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The sample entropy is computed using: </p>
+<p align="center"><i>hq(m,r) =
+  log(Cq(m,r)/Cq(m+1,r)),</i></p>
+<p> where <EM>m</EM> is the embedding
+dimension and <EM>r</EM> is the radius of the
+neighbourhood. When computing the correlation dimensions
+we use the linear regions from the correlation sums in
+order to do the estimates. Similarly, the sample entropy
+<i>hq(m,r)</i> should not change for both
+various <EM>m</EM> and <EM>r</EM>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <EM>CalculateSampleEntropy</EM> returns a HRVData
+structure containing the sample entropy computations of
+the RR time series under the <EM>NonLinearAnalysis</EM>
+list.
+</p>
+<p>The <EM>EstimateSampleEntropy</EM> function estimates the
+sample entropy of the RR time series by performing a
+linear regression over the radius' range specified in
+<EM>regressionRange</EM>. If <EM>doPlot</EM> is TRUE, a
+graphic of the regression over the data is shown. In
+order to run <EM>EstimateSampleEntropy</EM>, it is
+necessary to have performed the sample entropy
+computations before with <EM>ComputeSampleEntropy</EM>. The
+results are returned into the <EM>HRVData</EM> structure,
+under the <EM>NonLinearAnalysis</EM> list.
+</p>
+<p><EM>PlotSampleEntropy</EM> shows a graphic of the sample
+entropy computations.
+</p>
+
+
+<h3>Note</h3>
+
+<p>In order to run this functions, it is necessary to have
+used the <EM>CalculateCorrDim</EM> function.
+</p>
+<p>This function is based on the
+<code><a href="../../nonlinearTseries/html/sampleEntropy.html">sampleEntropy</a></code> function
+from the nonlinearTseries package.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Constantino A. Garcia
+</p>
+
+
+<h3>References</h3>
+
+<p>H. Kantz and T. Schreiber: Nonlinear Time series Analysis
+(Cambridge university press)
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../nonlinearTseries/html/sampleEntropy.html">sampleEntropy</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# ...
+hrv.data = CreateNonLinearAnalysis(hrv.data)
+hrv.data = CalculateCorrDim(hrv.data,indexNonLinearAnalysis=1,minEmbeddingDim=2,
+                            maxEmbeddingDim=8,timeLag=1,minRadius=1,maxRadius=15,
+                            pointsRadius=20,theilerWindow=10,corrOrder=2,doPlot=FALSE)
+hrv.data = CalculateSampleEntropy(hrv.data,indexNonLinearAnalysis=1,doPlot=FALSE)
+PlotSampleEntropy(hrv.data,indexNonLinearAnalysis=1)
+hrv.data = EstimateSampleEntropy(hrv.data,indexNonLinearAnalysis=1,regressionRange=c(6,10))
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

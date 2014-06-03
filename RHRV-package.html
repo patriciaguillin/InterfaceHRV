@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: RHRV: An R-based software package for the heart rate...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for RHRV-package {RHRV}"><tr><td>RHRV-package {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>
+RHRV: An R-based software package for the heart rate variability analysis of ECG recordings
+</h2>
+
+<h3>Description</h3>
+
+<p>RHRV offers functions for performing power spectral analysis of heart rate data. We will use this package for the study of several diseases, such as obstructive sleep apnoea or chronic obstructive pulmonary disease.
+</p>
+
+
+<h3>Details</h3>
+
+
+<table summary="Rd table">
+<tr>
+ <td align="left">
+Package: </td><td align="left"> RHRV</td>
+</tr>
+<tr>
+ <td align="left">
+Type: </td><td align="left"> Package</td>
+</tr>
+<tr>
+ <td align="left">
+Version: </td><td align="left"> 3.0.7</td>
+</tr>
+<tr>
+ <td align="left">
+Date: </td><td align="left"> 2013-01-18</td>
+</tr>
+<tr>
+ <td align="left">
+License: </td><td align="left"> GPL-2</td>
+</tr>
+<tr>
+ <td align="left">
+LazyLoad: </td><td align="left"> yes</td>
+</tr>
+<tr>
+ <td align="left">
+</td>
+</tr>
+
+</table>
+
+<p>This is a package for developing heart rate variability studies of ECG records. Data are read from an ascii file containing a column with beat positions in seconds. A function is included in order to build this file from an ECG record in WFDB format (visit the site http://www.physionet.org for more information).
+</p>
+
+
+<h3>Note</h3>
+
+<p>An example including all the necessary steps to obtain and to <br> 
+analyze by episodes the power bands of a wfdb register is <br>
+giving below:<br>
+</p>
+<p>##Reading a wfdb register and storing into a data structure:<br>
+md = CreateHRVData(Verbose = TRUE)<br>
+md = LoadBeatWFDB(md, RecordName = &quot;register_name&quot;, <br>
+RecordPath = &quot;register_path&quot;)<br>
+</p>
+<p>##Loading information of episodes of apnea:<br>
+md = LoadApneaWFDB(md, RecordName = &quot;register_name&quot;, <br>
+RecordPath = &quot;register_path&quot;, Tag = &quot;APN&quot;)<br>
+</p>
+<p>##Generating new episodes before and after previous episodes of <br>
+apnea:<br>
+md = GenerateEpisodes(md, NewBegFrom = &quot;Beg&quot;, NewEndFrom = &quot;Beg&quot;, <br>
+DispBeg = -600, DispEnd = -120, OldTag = &quot;APN&quot;, <br>
+NewTag = &quot;PREV_APN&quot;)<br>
+md = GenerateEpisodes(md, NewBegFrom = &quot;End&quot;, NewEndFrom = &quot;End&quot;, <br>
+DispBeg = 120, DispEnd = 600, OldTag = &quot;APN&quot;, <br>
+NewTag = &quot;POST_APN&quot;)<br>
+</p>
+<p>##Calculating heart rate signal:<br>
+md = BuildNIHR(md)<br>
+</p>
+<p>##Filtering heart rate signal:<br>
+md = FilterNIHR(md)<br>
+</p>
+<p>##Interpolating heart rate signal:<br>
+md = InterpolateNIHR(md)<br>
+</p>
+<p>##Calculating spectrogram and power per band:<br>
+md = CreateFreqAnalysis(md)<br>
+md = CalculatePowerBand(md, indexFreqAnalysis = 1, size = 120, <br>
+shift = 10, sizesp = 1024)<br>
+</p>
+<p>##Plotting power per band, including episodes information:<br>
+PlotPowerBand(md, indexFreqAnalysis = 1, hr = TRUE, ymax = 2400000, <br>
+ymaxratio = 3, Tag = &quot;all&quot;)<br>
+</p>
+<p>##Splitting power per band using episodes before and after <br>
+episodes of apnea:<br>
+PrevAPN = SplitPowerBandByEpisodes(md, indexFreqAnalysis = 1, <br>
+Tag = &quot;PREV_APN&quot;)<br>
+PostAPN = SplitPowerBandByEpisodes(md, indexFreqAnalysis = 1, <br>
+Tag = &quot;POST_APN&quot;)<br>
+</p>
+<p>##Performing Student's t-test:<br>
+result = t.test(PrevAPN$InEpisodes$ULF, PostAPN$InEpisodes$ULF)<br>
+print(result)<br>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Mendez, L. Rodriguez, A. Otero, C.A. Garcia, X. Vila, M. Lado
+</p>
+<p>Maintainer: Leandro Rodriguez-Linares &lt;leandro@uvigo.es&gt;
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, L., A.J. Mendez, M.J. Lado, D.N. Olivieri, X.A. Vila, and I. Gomez-Conde, &quot;An open source tool for heart rate variability spectral analysis&quot;, Computer Methods and Programs in Biomedicine 103(1):39-50, july 2011.
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Plots power determined by CalculatePowerBand function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for PlotPowerBand {RHRV}"><tr><td>PlotPowerBand {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2> Plots power determined by CalculatePowerBand function </h2>
+
+<h3>Description</h3>
+
+<p>Plots the power of the heart rate signal at different bands of interest.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+PlotPowerBand(HRVData, indexFreqAnalysis = length(HRVData$FreqAnalysis),
+normalized = FALSE, 
+		hr = FALSE, ymax = NULL, ymaxratio = NULL, ymaxnorm = 1, 
+		Tag = NULL, verbose=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p> Data structure that stores the beats register and information
+related to it </p>
+</td></tr>
+<tr valign="top"><td><code>indexFreqAnalysis</code></td>
+<td>
+<p> Reference to the data structure that will contain
+the variability analysis </p>
+</td></tr>
+<tr valign="top"><td><code>normalized</code></td>
+<td>
+<p> Plots normalized powers if TRUE </p>
+</td></tr>
+<tr valign="top"><td><code>hr</code></td>
+<td>
+<p> Plots heart rate signal if TRUE </p>
+</td></tr>
+<tr valign="top"><td><code>ymax</code></td>
+<td>
+<p> Maximum value for y axis (unnormalized plots) </p>
+</td></tr>
+<tr valign="top"><td><code>ymaxratio</code></td>
+<td>
+<p> Maximum value for y axis in LF/HF band (normalized and 
+unnormalized plots) </p>
+</td></tr>
+<tr valign="top"><td><code>ymaxnorm</code></td>
+<td>
+<p> Maximum value for y axis (normalized plots) </p>
+</td></tr>
+<tr valign="top"><td><code>Tag</code></td>
+<td>
+<p> Argument that allows to specify if episodes contained in Data are 
+represented by means of coloured boxes, for example apnoea or oxygen 
+desaturation, &quot;ALL&quot; for all episodes</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p> Deprecated argument maintained for compatibility, use 
+SetVerbose() instead </p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>An example including all the necessary steps to obtain the power <br>
+bands of a wfdb register is given below:<br>
+</p>
+<p>##Reading a wfdb register and storing into a data structure:<br>
+md = CreateHRVData(Verbose = TRUE)<br>
+md = LoadBeatWFDB(md, RecordName = &quot;register_name&quot;, <br>
+RecordPath = &quot;register_path&quot;)<br>
+</p>
+<p>##Calculating heart rate signal:<br>
+md = BuildNIHR(md)<br>
+</p>
+<p>##Filtering heart rate signal:<br>
+md = FilterNIHR(md)<br>
+</p>
+<p>##Interpolating heart rate signal:<br>
+md = InterpolateNIHR(md)<br>
+</p>
+<p>##Calculating spectrogram and power per band:<br>
+md = CreateFreqAnalysis(md)<br>
+md = CalculatePowerBand(md, indexFreqAnalysis = 1, size = 120, <br>
+shift = 10, sizesp = 1024)<br>
+</p>
+<p>## Plotting Power per Band<br>
+PlotPowerBand(md, hr = TRUE, ymax = 700000, ymaxratio = 4)<br>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>M. Lado, A. Mendez, D. Olivieri, L. Rodriguez, X. Vila
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, L., A.J. Mendez, M.J. Lado, D.N. Olivieri, X.A. Vila,
+and I. Gomez-Conde, &quot;An open source tool for heart rate variability spectral 
+analysis&quot;, Computer Methods and Programs in Biomedicine 103(1):39-50, july 2011.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="CalculatePowerBand.html">CalculatePowerBand</a></code> for power calculation
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

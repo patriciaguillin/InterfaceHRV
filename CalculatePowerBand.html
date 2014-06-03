@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Calculates power per band</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for CalculatePowerBand {RHRV}"><tr><td>CalculatePowerBand {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2> Calculates power per band </h2>
+
+<h3>Description</h3>
+
+<p>Calculates  power of the heart rate signal at ULF, VLF, LF and HF bands
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+CalculatePowerBand(HRVData, indexFreqAnalysis=length(HRVData$FreqAnalysis), 
+size, shift, sizesp = NULL, scale="linear", ULFmin=0, ULFmax=0.03, VLFmin=0.03,
+VLFmax=0.05, LFmin=0.05, LFmax=0.15, HFmin=0.15, HFmax=0.4, verbose=NULL,
+type="fourier",wavelet="d4",bandtolerance=0.1,relative=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p> Data structure that stores the beats register and information 
+related to it </p>
+</td></tr>
+<tr valign="top"><td><code>indexFreqAnalysis</code></td>
+<td>
+<p> Reference to the data structure that will contain
+the variability analysis </p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p> Size of window for calculations (seconds) </p>
+</td></tr>
+<tr valign="top"><td><code>shift</code></td>
+<td>
+<p> Displacement of window for calculations (seconds) </p>
+</td></tr>
+<tr valign="top"><td><code>sizesp</code></td>
+<td>
+<p> Points for calculation (zero padding). If the user does not 
+specify it, the function estimates a propper value.</p>
+</td></tr>
+<tr valign="top"><td><code>ULFmin</code></td>
+<td>
+<p> Lower limit ULF band </p>
+</td></tr>
+<tr valign="top"><td><code>ULFmax</code></td>
+<td>
+<p> Upper limit ULF band </p>
+</td></tr>
+<tr valign="top"><td><code>VLFmin</code></td>
+<td>
+<p> Lower limit VLF band </p>
+</td></tr>
+<tr valign="top"><td><code>VLFmax</code></td>
+<td>
+<p> Upper limit VLF band </p>
+</td></tr>
+<tr valign="top"><td><code>LFmin</code></td>
+<td>
+<p> Lower limit LF band </p>
+</td></tr>
+<tr valign="top"><td><code>LFmax</code></td>
+<td>
+<p> Upper limit LF band </p>
+</td></tr>
+<tr valign="top"><td><code>HFmin</code></td>
+<td>
+<p> Lower limit HF band </p>
+</td></tr>
+<tr valign="top"><td><code>HFmax</code></td>
+<td>
+<p> Upper limit HF band </p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p> Deprecated argument </p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p> Deprecated argument maintained for compatibility,
+use SetVerbose() instead </p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p> Type of analysis used to calculate the spectrogram. 
+Possible options are &quot;fourier&quot; or &quot;wavelet&quot;</p>
+</td></tr> 
+<tr valign="top"><td><code>wavelet</code></td>
+<td>
+<p> Mother wavelet used to calculate the spectrogram when
+a wavelet-based analysis is performed. The available wavelets are: 
+&quot;haar&quot; wavelet; least asymmetric Daubechies wavelets of width 8 (&quot;la8&quot;),
+16 (&quot;la16&quot;) and 20 (&quot;la20&quot;) samples; extremal phase Daubechies of width 4
+(&quot;d4&quot;), 6 (&quot;d6&quot;), 8 (&quot;d8&quot;) and 16 (&quot;d16&quot;) samples; best localized wavelets
+of width 14 (&quot;bl14&quot;) and 20 (&quot; bl20&quot;) samples; Fejer-Korovkin wavelets of 
+width 4 (&quot;fk4&quot;), 6 (&quot;fk6&quot;), 8 (&quot;fk8&quot;), 14(&quot;fk14&quot;) and 22 (&quot;fk22&quot;) samples; 
+minimum bandwidth wavelets of width 4 (&quot;mb4&quot;), 8 (&quot;mb8&quot;), 16 (&quot;mb16&quot;) and 24 
+(&quot;mb24&quot;); and the biorthogonal wavelet &quot;bs3.1&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>bandtolerance</code></td>
+<td>
+<p> Maximum error allowed when a wavelet-based analysis is 
+performed. It can be specified as a absolute or a relative error depending on
+the &quot;relative&quot; parameter value</p>
+</td></tr>
+<tr valign="top"><td><code>relative</code></td>
+<td>
+<p> Logic value specifying which kind of bandtolerance shall be
+used (relative or absolute). The relative tolerance takes into account the 
+width of each of the intervals of interest.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns HRVData, the structure that contains beat positions register, 
+associated heart rate instantaneous values, filtered heart rate signal
+equally spaced, and the analysis structure including spectral power at 
+different bands of the heart rate signal
+</p>
+
+
+<h3>Note</h3>
+
+<p>An example including all the necessary steps to obtain the power<br> 
+bands of a wfdb register is giving below:<br>
+</p>
+<p>##Reading a wfdb register and storing into a data structure:<br>
+md = CreateHRVData(Verbose = TRUE)<br>
+md = LoadBeatWFDB(md, RecordName = &quot;register_name&quot;,<br> 
+RecordPath = &quot;register_path&quot;)<br>
+</p>
+<p>##Calculating heart rate signal:<br>
+md = BuildNIHR(md)<br>
+</p>
+<p>##Filtering heart rate signal:<br>
+md = FilterNIHR(md)<br>
+</p>
+<p>##Interpolating heart rate signal:<br>
+md = InterpolateNIHR(md)<br>
+</p>
+<p>##Calculating spectrogram and power per band using fourier <br>
+analysis:<br>
+md = CreateFreqAnalysis(md)<br>
+md = CalculatePowerBand(md, indexFreqAnalysis = 1, size = 120, <br>
+shift = 10, sizesp = 1024)<br>
+</p>
+<p>##Calculating spectrogram and power per band using wavelet analysis:<br>
+md = CreateFreqAnalysis(md)<br>
+md = CalculatePowerBand(md, indexFreqAnalysis = 2, type=&quot;wavelet&quot;,<br> 
+wavelet=&quot;la8&quot;,bandtolerance=0.0025)<br>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>M. Lado, A. Mendez, D. Olivieri, L. Rodriguez, X. Vila
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, L., A.J. Mendez, M.J. Lado, D.N. Olivieri, X.A. Vila, 
+and I. Gomez-Conde, &quot;An open source tool for heart rate variability spectral 
+analysis&quot;, Computer Methods and Programs in Biomedicine 103(1):39-50, july 2011.
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Creates new episodes from old ones</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for GenerateEpisodes {RHRV}"><tr><td>GenerateEpisodes {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2> Creates new episodes from old ones </h2>
+
+<h3>Description</h3>
+
+<p>Creates new episodes, or annotated physiological events, from existing ones and stores them into the data structure containing the beat positions
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+GenerateEpisodes(HRVData, NewBegFrom, NewEndFrom, DispBeg, DispEnd, 
+		OldTag = "", NewTag = "", verbose=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p> Data structure that stores the beats register and information related to it </p>
+</td></tr>
+<tr valign="top"><td><code>NewBegFrom</code></td>
+<td>
+<p> Source of new beginning of episodes (&quot;Beg&quot; for indicating the beginning as the beginning of the old episode, &quot;End&quot; for end)</p>
+</td></tr> 
+<tr valign="top"><td><code>NewEndFrom</code></td>
+<td>
+<p> Source of new end of episodes (&quot;Beg&quot; for indicating the end as the beginning of the old episode, &quot;End&quot; for end)</p>
+</td></tr>
+<tr valign="top"><td><code>DispBeg</code></td>
+<td>
+<p> Absolute displacement from the beginning for new episodes in seconds </p>
+</td></tr>
+<tr valign="top"><td><code>DispEnd</code></td>
+<td>
+<p> Absolute displacement from the end for new episodes in seconds </p>
+</td></tr>
+<tr valign="top"><td><code>OldTag</code></td>
+<td>
+<p> Tag of old episodes </p>
+</td></tr>
+<tr valign="top"><td><code>NewTag</code></td>
+<td>
+<p> Tag for new episodes (if empty, copies OldTag) </p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p> Deprecated argument maintained for compatibility, use SetVerbose() instead </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns HRVData, the structure that contains beat positions register and new episodes information
+</p>
+
+
+<h3>Note</h3>
+
+<p>##Example of arguments for creating episodes displaced one <br>
+minute before old ones:<br>
+##NewBegFrom = &quot;Beg&quot;, NewEndFrom = &quot;End&quot;, DispBeg = -60, <br>
+DispEnd = -60<br>
+##Example of arguments for creating episodes just after previous<br>
+ones of 1 minute length:<br>
+##NewBegFrom = &quot;End&quot;, NewEndFrom = &quot;End&quot;, DispBeg = 0, <br>
+DispEnd = 60<br>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>M. Lado, A. Mendez, D. Olivieri, L. Rodriguez, X. Vila
+</p>
+
+
+<h3>References</h3>
+
+<p>L. Rodriguez-Linares, X. Vila, A. Mendez, M. Lado, D. Olivieri, &quot;RHRV: An R-based software package for heart rate variability analysis of ECG recordings,&quot; 3rd Iberian Conference in Systems and Information Technologies (CISTI 2008), Proceedings I, 565-573, ISBN: 978-84-612-4476-8 (2008)
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

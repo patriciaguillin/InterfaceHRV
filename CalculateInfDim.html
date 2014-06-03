@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Information dimension of the RR time series</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for CalculateInfDim {RHRV}"><tr><td>CalculateInfDim {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Information dimension of the RR time series</h2>
+
+<h3>Description</h3>
+
+<p>Information dimension of the RR time series
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  CalculateInfDim(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    minEmbeddingDim = NULL, maxEmbeddingDim = NULL,
+    timeLag = NULL, minFixedMass = 1e-04,
+    maxFixedMass = 0.005, numberFixedMassPoints = 50,
+    radius = 1, increasingRadiusFactor = 1.05,
+    numberPoints = 500, theilerWindow = 100, doPlot = TRUE)
+
+  EstimateInfDim(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    regressionRange = NULL, useEmbeddings = NULL,
+    doPlot = TRUE)
+
+  PlotInfDim(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis),
+    ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it</p>
+</td></tr>
+<tr valign="top"><td><code>indexNonLinearAnalysis</code></td>
+<td>
+<p>Reference to the data
+structure that will contain the nonlinear analysis.</p>
+</td></tr>
+<tr valign="top"><td><code>minEmbeddingDim</code></td>
+<td>
+<p>Integer denoting the minimum
+dimension in which we shall embed the time series.</p>
+</td></tr>
+<tr valign="top"><td><code>maxEmbeddingDim</code></td>
+<td>
+<p>Integer denoting the maximum
+dimension in which we shall embed the time series. Thus,
+we shall estimate the correlation dimension between
+<EM>minEmbeddingDim</EM> and <EM>maxEmbeddingDim</EM>.</p>
+</td></tr>
+<tr valign="top"><td><code>timeLag</code></td>
+<td>
+<p>Integer denoting the number of time steps
+that will be use to construct the Takens' vectors.</p>
+</td></tr>
+<tr valign="top"><td><code>minFixedMass</code></td>
+<td>
+<p>Minimum percentage of the total
+points that the algorithm shall use for the estimation.</p>
+</td></tr>
+<tr valign="top"><td><code>maxFixedMass</code></td>
+<td>
+<p>Maximum percentage of the total
+points that the algorithm shall use for the estimation.</p>
+</td></tr>
+<tr valign="top"><td><code>numberFixedMassPoints</code></td>
+<td>
+<p>The number of different
+<EM>fixed mass</EM> fractions between <EM>minFixedMass</EM>
+and <EM>maxFixedMass</EM> that the algorithm will use for
+estimation.</p>
+</td></tr>
+<tr valign="top"><td><code>radius</code></td>
+<td>
+<p>Initial radius for searching neighbour
+points in the phase space. Ideally, it should be small
+enough so that the fixed mass contained in this radius is
+slightly greater than the <EM>minFixedMass</EM>. However,
+whereas the radius is not too large (so that the
+performance decreases) the choice is not critical.</p>
+</td></tr>
+<tr valign="top"><td><code>increasingRadiusFactor</code></td>
+<td>
+<p>Numeric value. If no enough
+neighbours are found within <EM>radius</EM>, the radius is
+increased by a factor <EM>increasingRadiusFactor</EM> until
+succesful. Default: sqrt(2) = 1.05.</p>
+</td></tr>
+<tr valign="top"><td><code>numberPoints</code></td>
+<td>
+<p>Number of reference points that the
+routine will try to use, saving computation time.</p>
+</td></tr>
+<tr valign="top"><td><code>theilerWindow</code></td>
+<td>
+<p>Integer denoting the Theiler window:
+Two Takens' vectors must be separated by more than
+theilerWindow time steps in order to be considered
+neighbours. By using a Theiler window, we exclude
+temporally correlated vectors from our estimations.</p>
+</td></tr>
+<tr valign="top"><td><code>doPlot</code></td>
+<td>
+<p>Logical value. If TRUE (default), a plot of
+the correlation sum with q=1 is shown</p>
+</td></tr>
+<tr valign="top"><td><code>regressionRange</code></td>
+<td>
+<p>Vector with 2 components denoting
+the range where the function will perform linear
+regression</p>
+</td></tr>
+<tr valign="top"><td><code>useEmbeddings</code></td>
+<td>
+<p>A numeric vector specifying which
+embedding dimensions should the algorithm use to compute
+the information dimension.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional plot parameters.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The information dimension is a particular case of the
+generalized correlation dimension when setting the order
+q = 1. It is possible to demonstrate that the information
+dimension <i>D1</i> may be defined as:
+<i>D1=lim{r-&gt;0} &lt;ln p(r)&gt;/ln(r)</i>. Here,
+<i>p(r)</i> is the probability of finding a neighbour in a
+neighbourhood of size <i>r</i> and &lt;&gt; is the mean value.
+Thus, the information dimension specifies how the average
+Shannon information scales with the radius <i>r</i>.
+</p>
+<p>In order to estimate <i>D1</i>, the algorithm looks
+for the scaling behaviour of the average radius that
+contains a given portion (a &quot;fixed-mass&quot;) of the total
+points in the phase space. By performing a linear
+regression of <i>ln p Vs ln
+  &lt;r&gt;</i> (being <i>p</i> the fixed-mass of the total points),
+an estimate of <i>D1</i> is obtained. The user should
+run the method for different embedding dimensions for
+checking if <i>D1</i> saturates.
+</p>
+<p>The calculations for the information dimension are
+heavier than those needed for the correlation dimension.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <EM>CalculateCorrDim</EM> returns the <EM>HRVData</EM>
+structure containing a <EM>infDim</EM> object storing the
+results of the correlation sum (see <code><a href="../../nonlinearTseries/html/infDim.html">infDim</a></code>)
+of the RR time series.
+</p>
+<p>The <EM>EstimateInfDim</EM> function estimates the
+information dimension of the RR time series by averaging
+the slopes of the correlation sums with q=1.  The slopes
+are determined by performing a linear regression over the
+radius' range specified in <EM>regressionRange</EM>.If
+<EM>doPlot</EM> is TRUE, a graphic of the regression over
+the data is shown. The results are returned into the
+<EM>HRVData</EM> structure, under the
+<EM>NonLinearAnalysis</EM> list.
+</p>
+<p><EM>PlotInfDim</EM> shows a graphics of the correlation sum
+with q=1.
+</p>
+
+
+<h3>Note</h3>
+
+<p>In order to run <EM>EstimateInfDim</EM>, it is necessary to
+have performed the correlation sum before with
+<EM>ComputeInfDim</EM>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Constantino A. Garcia
+</p>
+
+
+<h3>References</h3>
+
+<p>H. Kantz and T. Schreiber: Nonlinear Time series Analysis
+(Cambridge university press)
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="CalculateCorrDim.html">CalculateCorrDim</a></code>.
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

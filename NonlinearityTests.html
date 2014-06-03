@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Nonlinearity tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for NonlinearityTests {RHRV}"><tr><td>NonlinearityTests {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Nonlinearity tests</h2>
+
+<h3>Description</h3>
+
+<p>Nonlinearity tests
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  NonlinearityTests(HRVData,
+    indexNonLinearAnalysis = length(HRVData$NonLinearAnalysis))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Structure containing the RR time series.</p>
+</td></tr>
+<tr valign="top"><td><code>indexNonLinearAnalysis</code></td>
+<td>
+<p>Reference to the data
+structure that will contain the nonlinear analysis</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function runs a set of nonlinearity tests on the RR
+time series implemented in other R packages including:
+</p>
+ <ul>
+<li><p> Teraesvirta's neural metwork test for
+nonlinearity (<code><a href="../../tseries/html/terasvirta.test.html">terasvirta.test</a></code>).
+</p>
+</li>
+<li><p> White neural metwork test for nonlinearity
+(<code><a href="../../tseries/html/white.test.html">white.test</a></code>).  </p>
+</li>
+<li><p> Keenan's
+one-degree test for nonlinearity
+(<code><a href="../../TSA/html/Keenan.test.html">Keenan.test</a></code>).  </p>
+</li>
+<li><p> Perform the
+McLeod-Li test for conditional heteroscedascity (ARCH).
+(<code><a href="../../TSA/html/McLeod.Li.test.html">McLeod.Li.test</a></code>).  </p>
+</li>
+<li><p> Perform the
+Tsay's test for quadratic nonlinearity in a time series.
+(<code><a href="../../TSA/html/Tsay.test.html">Tsay.test</a></code>).  </p>
+</li>
+<li><p> Perform the
+Likelihood ratio test for threshold nonlinearity.
+(<code><a href="../../TSA/html/tlrt.html">tlrt</a></code>). </p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>A <EM>HRVData</EM> structure containing a
+<EM>NonlinearityTests</EM> field storing the results of
+each of the tests. The <EM>NonlinearityTests</EM> list is
+stored under the <EM>NonLinearAnalysis</EM> structure.
+</p>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

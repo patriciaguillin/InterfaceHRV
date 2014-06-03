@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Analyze power band by episodes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for AnalyzePowerBandsByEpisodes {RHRV}"><tr><td>AnalyzePowerBandsByEpisodes {RHRV}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Analyze power band by episodes</h2>
+
+<h3>Description</h3>
+
+<p>Analyzes the ULF, VLF, LF and HF bands from a given
+indexFreqAnalysis allowing to evaluate the application of
+a desired function inside and outside each episode.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  AnalyzePowerBandsByEpisodes(HRVData,
+    indexFreqAnalysis = length(HRVData$FreqAnalysis),
+    Tag = "", verbose = NULL, func, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HRVData</code></td>
+<td>
+<p>Data structure that stores the beats
+register and information related to it.</p>
+</td></tr>
+<tr valign="top"><td><code>indexFreqAnalysis</code></td>
+<td>
+<p>Integer value denoting which
+frequency analysis is going to be analyzed using func.
+Default: 1</p>
+</td></tr>
+<tr valign="top"><td><code>Tag</code></td>
+<td>
+<p>Type of episode</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>Deprecated argument maintained for
+compatibility, use SetVerbose() instead</p>
+</td></tr>
+<tr valign="top"><td><code>func</code></td>
+<td>
+<p>Function to be applied to each power band
+inside and outside episodes</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments for func.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns a list with two objects, that is, the values of
+the application of the selected function inside
+(&quot;resultIn&quot;) and outside (&quot;resultOut&quot;) episodes in the
+given indexFreqAnalysis. Each of these list has another
+set of lists: the &quot;ULF&quot;, &quot;VLF&quot;, &quot;LF&quot; and &quot;HF&quot; lists.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+hrv.data = CreateHRVData()
+hrv.data = SetVerbose(hrv.data, TRUE)
+hrv.data = LoadBeat(hrv.data, fileType = "WFDB", "a03", RecordPath ="beatsFolder/",
+                    annotator = "qrs")
+                    hrv.data = LoadApneaWFDB(hrv.data, RecordName="a03",Tag="Apnea",
+                                             RecordPath="beatsFolder/")
+hrv.data = BuildNIHR(hrv.data)
+hrv.data = InterpolateNIHR (hrv.data, freqhr = 4)
+hrv.data = CreateFreqAnalysis(hrv.data)
+hrv.data = CalculatePowerBand( hrv.data , indexFreqAnalysis= 1,
+                               type = "wavelet", wavelet = "la8",
+                                bandtolerance = 0.01, relative = FALSE)
+results = AnalyzePowerBandsByEpisodes(hrv.data,indexFreqAnalysis=1,
+                                       Tag="Apnea",func=mean)
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>RHRV</em> version 4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>
