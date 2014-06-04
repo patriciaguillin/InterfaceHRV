@@ -1,5 +1,5 @@
 # server.R
-
+hrv.data <- 1
 library(shiny)
 library(RHRV)
 
@@ -122,7 +122,6 @@ shinyServer(function(input, output) {
       Date <- paste(date.split[[1]][3],date.split[[1]][2],date.split[[1]][1],sep="/")
       dateTTime <- paste(Date, Time, sep = ' ')
       hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)
-      
       hrv.data = BuildNIHR(hrv.data)
       PlotNIHR(hrv.data)
     }
@@ -159,59 +158,59 @@ shinyServer(function(input, output) {
     
     #LOADING FILE -> CONSOLE
     output$summary <- renderPrint({
-      print("CreateHRVData()")
+      cat(">$CreateHRVData() \n")
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
       if(any(input$dist=="ascii")) {  
-        print("LoadBeatAscii()")
+        cat("\n>$LoadBeatAscii(hrv.data,",inFile$datapath,",",as.numeric(input$timeScale),",",dateTTime,")\n")
         input$timeScale    
         hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)
-        print("BuildNIHR()")
+        cat("\n>$BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        print("PlotNIHR()")
+        cat("\n>$PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="rr")) {  
-        print("LoadBeatRR()")
+        cat(">$LoadBeatRR(hrva.data,",inFile$datapath,",",as.numeric(input$timeScale),",",dateTTime,")\n")
         hrv.data = LoadBeatRR(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)       
-        print("BuildNIHR()")
+        cat("\n>$BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        print("PlotNIHR()")
+        cat("\n>$PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="wfdb")) {  
-        print("LoadBeatWFDB()")
+        cat(">$LoadBeatWFDB(hrv.data,",inFile$datapath,",",input$wfdbAnnotator,")")
         hrv.data = LoadBeatWFDB(hrv.data, RecordName= inFile$datapath, annotator = input$wfdbAnnotator)       
-        print("BuildNIHR()")
+        cat("\n>$BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        print("PlotNIHR()")
+        cat("\n>$PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="polar")) {  
-        print("LoadBeatPolar()")
+        cat(">$LoadBeatPolar(hrv.data",inFile$datapath,")")
         input$timeScale
         hrv.data = LoadBeatPolar(hrv.data, RecordName= inFile$datapath)        
-        print("BuildNIHR()")
+        cat("\n>$BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        print("PlotNIHR()")
+        cat("\n>$PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="suunto")) {  
-        print("LoadBeatSuunto()")
+        cat(">$LoadBeatSuunto(hrv.data",inFile$datapath,")")
         input$timeScale
         hrv.data = LoadBeatSuunto(hrv.data, RecordName= inFile$datapath)        
-        print("BuildNIHR()")
+        cat("\n>$BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        print("PlotNIHR()")
+        cat("\n>$PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="edf")) {  
-        print("LoadBeatEDFPlus()")
+        cat(">$LoadBeatEDFPlus(hrv.data",inFile$datapath,",",input$edfAnotation,")")
         input$timeScale
-        hrv.data = LoadBeatEDFPlus(hrv.data, RecordName= inFile$datapath, annotationType="QRS")        
-        print("BuildNIHR()")
+        hrv.data = LoadBeatEDFPlus(hrv.data, RecordName= inFile$datapath, annotationType=input$edfAnotation)        
+        cat("\n>$BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        print("PlotNIHR()")
+        cat("\n>$PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
     })
@@ -220,29 +219,26 @@ shinyServer(function(input, output) {
     #(nada que mostrar por ahora)
     output$documentationLoading1 <- renderUI({
      
-      includeHTML("CreateHRVData.html")
-
-    })
-    
-    output$documentationLoading2 <- renderUI({
-    
-      includeHTML("LoadBeatAscii.html")
-  
-    })
-    
-    output$documentationLoading3 <- renderUI({
-   
-      includeHTML("BuildNIHR.html")
       
+      if(any(input$dist=="ascii")) {  
+        includeHTML("LoadBeatAscii.html")
+      }
+      else if(any(input$dist=="rr")) {  
+        includeHTML("LoadBeatRR.html")
+      }
+      else if(any(input$dist=="wfdb")) { 
+        includeHTML("LoadBeatWFDB.html")
+      }
+      else if(any(input$dist=="polar")) { 
+        includeHTML("LoadBeatPolar.html")
+      }
+      else if(any(input$dist=="suunto")) {  
+        includeHTML("LoadBeatSuunto.html")
+      }
+      else if(any(input$dist=="edf")) {
+        includeHTML("LoadBeatEDFPlus.html")
+      }
     })
-    
-    output$documentationLoading4 <- renderUI({
-  
-      includeHTML("PlotNIHR.html")
- 
-    })
-    
-    
     
     #FILTERING -> AUTHOMATIC
     
@@ -257,7 +253,7 @@ shinyServer(function(input, output) {
       output$filteringP <- renderPlot({
       PlotNIHR(hrv.data)
         output$filtering <- renderPrint({
-          print("FilterNIHR()")
+          cat(">$FilterNIHR( hrv.data,",input$longF,",",input$lastF,",",input$minbpmF,",",input$maxbpmF,")")
           out.filtering.authomatic <- readLines(file.name, n = 10)
           for (i in 1:length(out.filtering.authomatic ) ){
             cat( out.filtering.authomatic[[i]], "\n")
@@ -265,7 +261,7 @@ shinyServer(function(input, output) {
           success <- file.remove(file.name)
         })
       })
-    })
+    
     
     output$documentationFiltering1 <- renderUI({
       
@@ -285,7 +281,7 @@ shinyServer(function(input, output) {
       output$filteringmM <- renderPlot({
         PlotNIHR(hrv.data)
           output$filteringM <- renderPrint({
-            print("EditNIHR")
+            cat(">$EditNIHR(hrv.data)")
             out.filtering.manual <- readLines(file.name, n = 100)
             for (i in 1:length(out.filtering.manual ) ){
               cat( out.filtering.manual[[i]], "\n")
@@ -314,7 +310,7 @@ shinyServer(function(input, output) {
       sink()
         PlotHR(hrv.data)
       output$interpolate <- renderPrint({
-          print("InterpolateNIHR()")
+          cat("InterpolateNIHR( hrv.data,",input$freqHR,",",input$methodInterpolation,")")
           out.interpolating <- readLines(file.name, n = 100)
           for (i in 1:length(out.interpolating ) ){
             cat( out.interpolating[[i]], "\n")
@@ -323,7 +319,7 @@ shinyServer(function(input, output) {
       
       })
       
-    })
+    
     
     output$documentationInterpolating <- renderUI({
       
@@ -339,9 +335,17 @@ shinyServer(function(input, output) {
       file.name <- tempfile("timeanalysis")
       sink(file=file.name)
       #long=input$longF ,last=input$lastF ,minbpm=input$minbpmF ,maxbpm=input$maxbpmF)
-      hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=NULL, interval=7.8125, verbose=NULL)
-      sink()
       
+      if(any(input$analysisTFunction=="intervalId")) {  
+        hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=NULL, interval = as.numeric(input$valueTime), verbose=NULL)
+       
+      }
+      else if(any(input$analysisTFunction=="numofbinsId")) {  
+        hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=input$valueTime, interval = NULL, verbose=NULL)
+       
+      }
+      
+      sink()
       
       
       output$timeanalysis <- renderTable({
@@ -359,7 +363,15 @@ shinyServer(function(input, output) {
         
       })
       output$timeanalysisV <- renderPrint({
-        print("CreateTimeAnalysis()")
+        if(any(input$analysisTFunction=="intervalId")) { 
+          cat(">$CreateTimeAnalysis(hrv.data,",input$sizeId,",numofbins=NULL, interval=",input$valueTime,", verbose=NULL)\n")
+        }
+        else if(any(input$analysisTFunction=="numofbinsId")) {
+          cat(">$CreateTimeAnalysis(hrv.data,",input$sizeId,",numofbins=",input$valueTime,", interval=NULL, verbose=NULL)\n")  
+          hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=input$valueTime, interval = NULL, verbose=NULL)
+          sink()
+        }
+        
         out.timeanalysis <- readLines(file.name, n = 100)
         for (i in 1:length(out.timeanalysis ) ){
           cat( out.timeanalysis[[i]], "\n")
@@ -396,24 +408,33 @@ shinyServer(function(input, output) {
       
     })
     
-    
+    output$downloadData <- downloadHandler(
+      filename = function() {
+        paste(
+          '
+          data-
+          '
+          , Sys.Date(),
+          '
+          .csv
+          '
+          , sep=
+            ''
+        )
+      },
+      content = function(con) {
+        write.csv(data, con)
+      }
+    )
+
     #ANALYSIS -> NON LINEAR
     #(nada que mostrar por ahora)
     
     
     
+    })
+    })
   })
-  
-  output$options <- renderUI({
-    
-  #if ascii... if RR.... if WFDB...
-    
-  })
-  
-  
-  
-  
-  
   
 
   

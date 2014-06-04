@@ -30,29 +30,6 @@ shinyUI(fluidPage(
           uiOutput("dist7"),
           uiOutput("dist8")
       
-          #wellPanel(
-           # selectInput(inputId = "type",
-            #            label = "Select file type:",
-             #           choices = c("Ascii","RR","WFDB","Polar","Suunto","EDF+"),
-              #          selected = "Acii"
-            #),
-            
-            #uiOutput("options")
-          #),
-          #selectInput("timeScale",
-           # label= "Time scale:",
-            #choices = c("Seconds"=1,"Tenths of a second"=0.1,"Hundredths of a second"=0.01,"Milisecond"=0.001), selected = 1),
-          #helpText("Note: Seconds(1), Tenths of a second(0.1), Hundredths of a second(0.01), Milisecond(0.001)"),
-          #dateInput("date", "Date:", value = "2012-04-30", format = "dd/mm/yyyy"),
-          #textInput("datyId", "Day:", "30"),
-          #textInput("monthId", "Month:", "04"),
-          #textInput("yearId", "Year:", "2014"),
-          #textInput("hourId", "Hour:", "12"),
-          #textInput("minuteId", "Minute:", "00"),
-          #textInput("secondId", "Second:", "00"),
-          
-          #submitButton("Update View")
-          
         ),
             
             
@@ -61,8 +38,8 @@ shinyUI(fluidPage(
                 tabsetPanel(
                     tabPanel("Graphic", plotOutput("contents")),
                     tabPanel("Console", verbatimTextOutput("summary")),
-                    tabPanel("Documentation", tabsetPanel(tabPanel("CreateHRVData", uiOutput("documentationLoading1")),tabPanel("LoadBeatAscii", uiOutput("documentationLoading2")), tabPanel("BuildNIHR", uiOutput("documentationLoading3")), tabPanel("PlotNIHR", uiOutput("documentationLoading4")))
-                             )
+                    tabPanel("Documentation", uiOutput("documentationLoading1"))
+                             
                   )
         
                 
@@ -135,8 +112,10 @@ shinyUI(fluidPage(
              sidebarPanel(
                h3("Analysis"),
                numericInput("sizeId", "Size:", 300),
-               textInput("NumofbinsId", "Numofbins:", ""),
-               textInput("intervalId", "Interval:", "")
+               selectInput("analysisTFunction","",
+                           list("Interval"="intervalId","Numofbins"="numofbinsId"),
+                           selected = "intervalId"),
+               numericInput("valueTime", "", 7.8125)
               # submitButton("Update View")
      
                
@@ -168,8 +147,8 @@ shinyUI(fluidPage(
            pageWithSidebar(
              headerPanel("RHRV Project"),
              sidebarPanel(
-               h3("Summary")
-            
+               h3("Summary"),
+               downloadButton('downloadData', 'Download')
              ),
              mainPanel(
                #plotOutput("contents")

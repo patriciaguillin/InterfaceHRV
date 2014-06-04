@@ -6,5 +6,12 @@ h1 {
 }
 
 body {
+  min-height: 500px;
   background-color: #FFF;
 }
+
+.shiny-text-output p{
+  color: green;
+  }
+  
+
