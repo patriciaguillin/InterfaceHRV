@@ -3,6 +3,7 @@ hrv.data <- 1
 library(shiny)
 library(RHRV)
 
+
 static_help = function(pkg, links = tools::findHTMLlinks()) {
   pkgRdDB = tools:::fetchRdDB(file.path(find.package(pkg), 'help', pkg))
   force(links); topics = names(pkgRdDB)
@@ -98,7 +99,10 @@ shinyServer(function(input, output) {
   
   #LOADING FILE -> GRAPHIC
   output$contents <- renderPlot({
-    static_help("RHRV")
+    filename <- 'LoadBeatAscii.html'
+    if(file.exists(filename) == FALSE){
+      static_help("RHRV")}
+    else{}
     # input$file1 will be NULL initially. After the user selects and uploads a 
     # file, it will be a data frame with 'name', 'size', 'type', and 'datapath' 
     # columns. The 'datapath' column will contain the local filenames where the 
@@ -310,7 +314,7 @@ shinyServer(function(input, output) {
       sink()
         PlotHR(hrv.data)
       output$interpolate <- renderPrint({
-          cat("InterpolateNIHR( hrv.data,",input$freqHR,",",input$methodInterpolation,")")
+          cat(">$InterpolateNIHR( hrv.data,",input$freqHR,",",input$methodInterpolation,")\n")
           out.interpolating <- readLines(file.name, n = 100)
           for (i in 1:length(out.interpolating ) ){
             cat( out.interpolating[[i]], "\n")
@@ -377,8 +381,8 @@ shinyServer(function(input, output) {
           cat( out.timeanalysis[[i]], "\n")
         }
         success <- file.remove(file.name)
-        print("Size of window:") 
-        print(hr$TimeAnalysis[[1]]$size)
+        cat("\n**Size of window: ") 
+        cat(hr$TimeAnalysis[[1]]$size)
       })
     })
     
@@ -391,6 +395,7 @@ shinyServer(function(input, output) {
     
     #ANALYSIS -> FREQUENCY
     output$fourierT <- renderPrint({
+      cat(">$CalculateSpectogram(hrv.data, size = 300, shift = 30, sizesp = 2048)\n")
       spectrogram = CalculateSpectrogram(hrv.data, size = 300, shift = 30, sizesp = 2048) 
     })
     output$fourier <- renderPlot({
