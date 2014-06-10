@@ -134,8 +134,8 @@ shinyServer(function(input, output) {
       date.in <- as.character(input$date)
       date.split <- strsplit(date.in,split="-" )
       Date <- paste(date.split[[1]][3],date.split[[1]][2],date.split[[1]][1],sep="/")
-      dateTTime <- paste(Date, Time, sep = ' ')
-      hrv.data = LoadBeatRR(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)
+      dateTTime1 <- paste(Date, Time, sep = ' ')
+      hrv.data = LoadBeatRR(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime1)
       hrv.data = BuildNIHR(hrv.data)
       PlotNIHR(hrv.data)
     }
@@ -155,66 +155,72 @@ shinyServer(function(input, output) {
       PlotNIHR(hrv.data)
     }
     else if(any(input$dist=="edf")) {
-      hrv.data = LoadBeatEDFPlus(hrv.data, RecordName= inFile$datapath, annotationType="QRS")        
+      hrv.data = LoadBeatEDFPlus(hrv.data, RecordName= inFile$datapath, annotationType=input$edfAnotation)        
       hrv.data = BuildNIHR(hrv.data)
       PlotNIHR(hrv.data)
     }
     
     #LOADING FILE -> CONSOLE
     output$summary <- renderPrint({
-      cat(">$CreateHRVData() \n")
+      cat(">hrv.data = CreateHRVData() \n")
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
-      if(any(input$dist=="ascii")) {  
-        cat("\n>$LoadBeatAscii(hrv.data,",inFile$datapath,",",as.numeric(input$timeScale),",",dateTTime,")\n")
-        input$timeScale    
+      if(any(input$dist=="ascii")) { 
+        Time <- paste(input$hourId,':',input$minuteId,':',input$secondId,sep = '')
+        date.in <- as.character(input$date)
+        date.split <- strsplit(date.in,split="-" )
+        Date <- paste(date.split[[1]][3],date.split[[1]][2],date.split[[1]][1],sep="/")
+        dateTTime <- paste(Date, Time, sep = ' ')
+        cat("\n>hrv.data = LoadBeatAscii(hrv.data, RecordName =",inFile$datapath,", scale =",as.numeric(input$timeScale),", datetime =",dateTTime,")\n")   
         hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)
-        cat("\n>$BuildNIHR(hrv.data)\n")
+        cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        cat("\n>$PlotNIHR(hrv.data)\n")
+        cat("\n>PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="rr")) {  
-        cat(">$LoadBeatRR(hrva.data,",inFile$datapath,",",as.numeric(input$timeScale),",",dateTTime,")\n")
-        hrv.data = LoadBeatRR(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)       
-        cat("\n>$BuildNIHR(hrv.data)\n")
+        Time <- paste(input$hourId,':',input$minuteId,':',input$secondId,sep = '')
+        date.in <- as.character(input$date)
+        date.split <- strsplit(date.in,split="-" )
+        Date <- paste(date.split[[1]][3],date.split[[1]][2],date.split[[1]][1],sep="/")
+        dateTTime1 <- paste(Date, Time, sep = ' ')
+        cat(">hrv.data = LoadBeatRR(hrva.data, RecordName =",inFile$datapath,", scale =",as.numeric(input$timeScale),", datetime =",dateTTime1,")\n")
+        hrv.data = LoadBeatRR(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime1)       
+        cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        cat("\n>$PlotNIHR(hrv.data)\n")
+        cat("\n>PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="wfdb")) {  
-        cat(">$LoadBeatWFDB(hrv.data,",inFile$datapath,",",input$wfdbAnnotator,")")
+        cat(">hrv.data = LoadBeatWFDB(hrv.data, RecordName =",inFile$datapath,", annotator =",input$wfdbAnnotator,")")
         hrv.data = LoadBeatWFDB(hrv.data, RecordName= inFile$datapath, annotator = input$wfdbAnnotator)       
-        cat("\n>$BuildNIHR(hrv.data)\n")
+        cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        cat("\n>$PlotNIHR(hrv.data)\n")
+        cat("\n>PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="polar")) {  
-        cat(">$LoadBeatPolar(hrv.data",inFile$datapath,")")
-        input$timeScale
+        cat(">hrv.data = LoadBeatPolar(hrv.data, RecordName =",inFile$datapath,")")
         hrv.data = LoadBeatPolar(hrv.data, RecordName= inFile$datapath)        
-        cat("\n>$BuildNIHR(hrv.data)\n")
+        cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        cat("\n>$PlotNIHR(hrv.data)\n")
+        cat("\n>PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="suunto")) {  
-        cat(">$LoadBeatSuunto(hrv.data",inFile$datapath,")")
-        input$timeScale
+        cat(">hrv.data = LoadBeatSuunto(hrv.data, RecordName =",inFile$datapath,")")
         hrv.data = LoadBeatSuunto(hrv.data, RecordName= inFile$datapath)        
-        cat("\n>$BuildNIHR(hrv.data)\n")
+        cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        cat("\n>$PlotNIHR(hrv.data)\n")
+        cat("\n>PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="edf")) {  
-        cat(">$LoadBeatEDFPlus(hrv.data",inFile$datapath,",",input$edfAnotation,")")
-        input$timeScale
+        cat(">hrv.data = LoadBeatEDFPlus(hrv.data, RecordName =",inFile$datapath,", annotationType =",input$edfAnotation,")")
         hrv.data = LoadBeatEDFPlus(hrv.data, RecordName= inFile$datapath, annotationType=input$edfAnotation)        
-        cat("\n>$BuildNIHR(hrv.data)\n")
+        cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
-        cat("\n>$PlotNIHR(hrv.data)\n")
+        cat("\n>PlotNIHR(hrv.data)\n")
         PlotNIHR(hrv.data)
       }
     })
@@ -243,29 +249,20 @@ shinyServer(function(input, output) {
         includeHTML("LoadBeatEDFPlus.html")
       }
     })
-    
+
     #FILTERING -> AUTHOMATIC
     
-    output$filteringpP <- renderPrint({
-      file.name <- tempfile("filteringAuthomatic")
-      sink(file=file.name)
-      #long=input$longF ,last=input$lastF ,minbpm=input$minbpmF ,maxbpm=input$maxbpmF)
-      hrv.data <- FilterNIHR(hrv.data, long=input$longF ,last=input$lastF ,minbpm=input$minbpmF ,maxbpm=input$maxbpmF)
-      sink()
-      
-      
-      output$filteringP <- renderPlot({
-      PlotNIHR(hrv.data)
-        output$filtering <- renderPrint({
-          cat(">$FilterNIHR( hrv.data,",input$longF,",",input$lastF,",",input$minbpmF,",",input$maxbpmF,")")
-          out.filtering.authomatic <- readLines(file.name, n = 10)
-          for (i in 1:length(out.filtering.authomatic ) ){
-            cat( out.filtering.authomatic[[i]], "\n")
-          }
-          success <- file.remove(file.name)
-        })
-      })
+    hrv.data <- FilterNIHR(hrv.data, long=input$longF ,last=input$lastF ,minbpm=input$minbpmF ,maxbpm=input$maxbpmF)
     
+    output$filteringP <- renderPlot({
+      PlotNIHR(hrv.data)
+      
+      output$filtering <- renderPrint({
+        cat(">hrv.data = FilterNIHR( hrv.data, long =",input$longF,", last =",input$lastF,", minbpm =",input$minbpmF,", maxbpm =",input$maxbpmF,")\n")
+        hrv.data <- FilterNIHR(hrv.data, long=input$longF ,last=input$lastF ,minbpm=input$minbpmF ,maxbpm=input$maxbpmF)
+        cat("\n>PlotNIHR(hrv.data)\n")
+        PlotNIHR(hrv.data)
+      })
     
     output$documentationFiltering1 <- renderUI({
       
@@ -285,12 +282,14 @@ shinyServer(function(input, output) {
       output$filteringmM <- renderPlot({
         PlotNIHR(hrv.data)
           output$filteringM <- renderPrint({
-            cat(">$EditNIHR(hrv.data)")
+            cat(">hrv.data = EditNIHR(hrv.data)\n")
             out.filtering.manual <- readLines(file.name, n = 100)
             for (i in 1:length(out.filtering.manual ) ){
               cat( out.filtering.manual[[i]], "\n")
             }
             success <- file.remove(file.name)
+            cat("\n>PlotNIHR(hrv.data)\n")
+            PlotNIHR(hrv.data)
          })
       })
 
@@ -308,18 +307,13 @@ shinyServer(function(input, output) {
     
     #INTERPOLATING
     output$interpolateGraphic <- renderPlot({
-      file.name <- tempfile("interpolating")
-      sink(file=file.name)
       hrv.data <- InterpolateNIHR (hrv.data, freqhr = input$freqHR, method = input$methodInterpolation)
-      sink()
-        PlotHR(hrv.data)
+      PlotHR(hrv.data)
       output$interpolate <- renderPrint({
-          cat(">$InterpolateNIHR( hrv.data,",input$freqHR,",",input$methodInterpolation,")\n")
-          out.interpolating <- readLines(file.name, n = 100)
-          for (i in 1:length(out.interpolating ) ){
-            cat( out.interpolating[[i]], "\n")
-          }
-          success <- file.remove(file.name)
+          cat(">hrv.data = InterpolateNIHR( hrv.data, freqhr =",input$freqHR,",method = \"",input$methodInterpolation,"\")\n")
+          hrv.data <- InterpolateNIHR (hrv.data, freqhr = input$freqHR, method = input$methodInterpolation)
+          cat("\n>PlotNIHR(hrv.data)\n")
+          PlotNIHR(hrv.data)
       
       })
       
@@ -334,26 +328,16 @@ shinyServer(function(input, output) {
         
     
     #ANALYSIS -> TIME
-   
-    output$timeanalysisvV <- renderPrint({
-      file.name <- tempfile("timeanalysis")
-      sink(file=file.name)
-      #long=input$longF ,last=input$lastF ,minbpm=input$minbpmF ,maxbpm=input$maxbpmF)
-      
-      if(any(input$analysisTFunction=="intervalId")) {  
-        hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=NULL, interval = as.numeric(input$valueTime), verbose=NULL)
-       
-      }
-      else if(any(input$analysisTFunction=="numofbinsId")) {  
-        hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=input$valueTime, interval = NULL, verbose=NULL)
-       
-      }
-      
-      sink()
-      
-      
+
       output$timeanalysis <- renderTable({
-        
+        if(any(input$analysisTFunction=="intervalId")) {  
+          hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=NULL, interval = as.numeric(input$valueTime), verbose=NULL)
+          
+        }
+        else if(any(input$analysisTFunction=="numofbinsId")) {  
+          hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=input$valueTime, interval = NULL, verbose=NULL)
+          
+        }
         hr$TimeAnalysis[[1]]
         hr$TimeAnalysis[[1]]$HRVi 
         smoke <- matrix(c(hr$TimeAnalysis[[1]]$SDNN,hr$TimeAnalysis[[1]]$SDANN,hr$TimeAnalysis[[1]]$SDNNIDX,
@@ -368,23 +352,17 @@ shinyServer(function(input, output) {
       })
       output$timeanalysisV <- renderPrint({
         if(any(input$analysisTFunction=="intervalId")) { 
-          cat(">$CreateTimeAnalysis(hrv.data,",input$sizeId,",numofbins=NULL, interval=",input$valueTime,", verbose=NULL)\n")
+          cat(">hrv.data = CreateTimeAnalysis(hrv.data, size =",input$sizeId,", numofbins = NULL, interval =",input$valueTime,", verbose = NULL)\n")
+          hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=NULL, interval = input$valueTime, verbose=NULL)
         }
         else if(any(input$analysisTFunction=="numofbinsId")) {
-          cat(">$CreateTimeAnalysis(hrv.data,",input$sizeId,",numofbins=",input$valueTime,", interval=NULL, verbose=NULL)\n")  
+          cat(">hrv.data = CreateTimeAnalysis(hrv.data,",input$sizeId,",numofbins =",input$valueTime,", interval = NULL, verbose = NULL)\n")  
           hr <- CreateTimeAnalysis(hrv.data, size = input$sizeId, numofbins=input$valueTime, interval = NULL, verbose=NULL)
-          sink()
         }
-        
-        out.timeanalysis <- readLines(file.name, n = 100)
-        for (i in 1:length(out.timeanalysis ) ){
-          cat( out.timeanalysis[[i]], "\n")
-        }
-        success <- file.remove(file.name)
         cat("\n**Size of window: ") 
         cat(hr$TimeAnalysis[[1]]$size)
       })
-    })
+    #})
     
     output$documentationTimeanalysis <- renderUI({
       
@@ -394,25 +372,72 @@ shinyServer(function(input, output) {
     
     
     #ANALYSIS -> FREQUENCY
-    output$fourierT <- renderPrint({
-      cat(">$CalculateSpectogram(hrv.data, size = 300, shift = 30, sizesp = 2048)\n")
-      spectrogram = CalculateSpectrogram(hrv.data, size = 300, shift = 30, sizesp = 2048) 
+
+    #Spectrogram
+    output$spectrogramP <- renderPlot({
+      hrv.data = CreateFreqAnalysis(hrv.data)
+      PlotSpectrogram(hrv.data, size = input$sizeSpectrogram, shift = input$shiftSpectrogram, sizesp = input$sizespSpectrogram, scale = input$scaleSpectrogram)
     })
-    output$fourier <- renderPlot({
-      spectrogram = PlotSpectrogram(HRVData = hrv.data, size = 300, shift = 60, sizesp = 2048)
+    output$spectrogram <- renderPrint({
+      cat(">hrv.data = CreateFreqAnalysis(hrv.data)\n")
+      hrv.data = CreateFreqAnalysis(hrv.data)
+      cat("\n>PlotSpectrogram(hrv.data, size =",input$sizeSpectrogram,", shift =",input$shiftSpectrogram,", sizesp =",input$sizespSpectrogram,",scale =",input$scaleSpectrogram,")\n")
+      spectogram = PlotSpectrogram(hrv.data, size = input$sizeSpectrogram, shift = input$shiftSpectrogram, sizesp = input$sizespSpectrogram, scale = input$scaleSpectrogram) 
     })
-    
-    output$wavelet <- renderPlot({
-      spectrogram = PlotSpectrogram(HRVData = hrv.data, size = 300, shift = 60, sizesp = 2048,
-                                    freqRange = c(0, 0.2))
-    })
-    
-    output$documentationFrequencyanalysis <- renderUI({
-      
-      includeHTML("CalculateSpectrogram.html")
-      
+    output$documentationSpectrogram <- renderUI({
+      includeHTML("PlotSpectrogram.html")
     })
     
+    #Fourier
+    output$fourierP <- renderPlot({
+      hrv.data = CreateFreqAnalysis(hrv.data)
+      hrv.data = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, size = input$sizeFourier, shift = input$shiftFourier, sizesp = input$sizespFourier, 
+                         type="fourier", ULFmin = input$ulfmin, ULFmax = input$ulfmax, VLFmin = input$vlfmin, VLFmax = input$vlfmax,
+                         LFmin = input$lfmin, LFmax = input$lfmax, HFmin = input$hfmin, HFmax = input$hfmax)
+      PlotPowerBand(hrv.data, indexFreqAnalysis = 1, ymax = 200, ymaxratio = 1.7)
+    })
+    output$fourierC <- renderPrint({
+      cat(">hrv.data = CreateFreqAnalysis(hrv.data)\n")
+      hrv.data = CreateFreqAnalysis(hrv.data)
+      cat("\n>hrv.data = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, size =",input$sizeFourier,", shift =",input$shiftFourier,", sizesp =",input$sizespFourier,", type= \"fourier\", ULFmin =",input$ulfmin,", ULFmax =",input$ulfmax,", VLFmin =",input$vlfmin,", VLFmax =",input$vlfmax,", LFmin =",input$lfmin,", LFmax =",input$lfmax,", HFmin =",input$hfmin,", HFmax =",input$hfmax,")\n")
+      hrv.data = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, size = input$sizeFourier, shift = input$shiftFourier, sizesp = input$sizespFourier, 
+                                    type="fourier", ULFmin = input$ulfmin, ULFmax = input$ulfmax, VLFmin = input$vlfmin, VLFmax = input$vlfmax,
+                                    LFmin = input$lfmin, LFmax = input$lfmax, HFmin = input$hfmin, HFmax = input$hfmax)
+      cat("\n>PlotPowerBand(hrv.data, indexFreqAnalysis = 1, ymax = 200, ymaxratio = 1.7)\n")
+      fourierPlot = PlotPowerBand(hrv.data, indexFreqAnalysis = 1, ymax = 200, ymaxratio = 1.7)
+    })
+    output$documentationFourier <- renderUI({
+      includeHTML("CalculatePowerBand.html")
+    })
+    
+    #Wavelet
+    output$waveletP <- renderPlot({
+      hrv.data = CreateFreqAnalysis(hrv.data)
+      hrv.data  = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, type="wavelet", 
+                                     wavelet="la8", bandtolerance=0.01, relative = FALSE,
+                                     ULFmin = input$ulfminW, ULFmax = input$ulfmaxW, VLFmin = input$vlfminW, VLFmax = input$vlfmaxW,
+                                     LFmin = input$lfminW, LFmax = input$lfmaxW, HFmin = input$hfminW, HFmax = input$hfmaxW)
+      PlotPowerBand(hrv.data, indexFreqAnalysis = 1, ymax = 700, ymaxratio = 50)
+    })
+    output$waveletC <- renderPrint({
+      cat(">hrv.data = CreateFreqAnalysis(hrv.data)\n")
+      hrv.data = CreateFreqAnalysis(hrv.data)
+      cat("\n>hrv.data = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, type= \"wavelet\", wavelet= \"la8\", bandtolerance = 0.01, relative = FALSE, ULFmin =",input$ulfminW,", ULFmax =",input$ulfmaxW,", VLFmin =",input$vlfminW,", VLFmax =",input$vlfmaxW,", LFmin =",input$lfminW,", LFmax =",input$lfmaxW,", HFmin =",input$hfminW,", HFmax =",input$hfmaxW,")\n")
+      hrv.data = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, type="wavelet", 
+                                    wavelet="la8", bandtolerance=0.01, relative = FALSE, ULFmin = input$ulfminW, 
+                                    ULFmax = input$ulfmaxW, VLFmin = input$vlfminW, VLFmax = input$vlfmaxW,
+                                    LFmin = input$lfminW, LFmax = input$lfmaxW, HFmin = input$hfminW, HFmax = input$hfmaxW)
+      cat("\n>PlotPowerBand(hrv.data, indexFreqAnalysis = 1, ymax = 200, ymaxratio = 1.7)\n")
+      fourierPlot = PlotPowerBand(hrv.data, indexFreqAnalysis = 1, ymax = 200, ymaxratio = 1.7)
+    })
+    output$documentationWavelet <- renderUI({
+      includeHTML("CalculatePowerBand.html")
+    })
+    
+    
+    
+    
+    #Download
     output$downloadData <- downloadHandler(
       filename = function() {
         paste(

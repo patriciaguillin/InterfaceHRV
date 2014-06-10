@@ -36,9 +36,10 @@ shinyUI(fluidPage(
               mainPanel(
                 #plotOutput("contents")
                 tabsetPanel(
-                    tabPanel("Graphic", plotOutput("contents")),
-                    tabPanel("Console", verbatimTextOutput("summary")),
-                    tabPanel("Documentation", uiOutput("documentationLoading1"))
+                    tabPanel("Graphic", plotOutput("contents"), value="loadingGraphicTab"),
+                    tabPanel("Console", verbatimTextOutput("summary"), value="loagingConsoleTab"),
+                    tabPanel("Documentation", uiOutput("documentationLoading1"), value="loadingDocumentationTab"),
+                    id = "loadingTab"
                              
                   )
         
@@ -66,13 +67,13 @@ shinyUI(fluidPage(
                #plotOutput("contents")
                tabsetPanel( 
                  tabPanel("Authomatic",
-                          tabsetPanel(tabPanel("Graphic", verbatimTextOutput("filteringpP"),plotOutput("filteringP")),tabPanel("Console", verbatimTextOutput("filtering")),tabPanel("Documentation",uiOutput("documentationFiltering1"))
+                          tabsetPanel(tabPanel("Graphic",plotOutput("filteringP")),tabPanel("Console", verbatimTextOutput("filtering")),tabPanel("Documentation",uiOutput("documentationFiltering1"))
                           
-                          )),
+                          ), value="filteringAuthoTab"),
                  tabPanel("Manual", 
                           tabsetPanel(tabPanel("Graphic", verbatimTextOutput("fiteringmmM"),plotOutput("filteringmM")),tabPanel("Console", verbatimTextOutput("filteringM")),tabPanel("Documentation",uiOutput("documentationFiltering2"))        
-                          )
-                  )
+                          ),value="filteringManualTab"),
+                 id = "filteringTab"
         
                )
              )
@@ -97,20 +98,21 @@ shinyUI(fluidPage(
                
                
                tabsetPanel(
-                 tabPanel("Graphic", plotOutput("interpolateGraphic")),
-                 tabPanel("Console", verbatimTextOutput("interpolate")),
-                 tabPanel("Documentation",uiOutput("documentationInterpolating"))
+                 tabPanel("Graphic", plotOutput("interpolateGraphic"), value = "interpolatingGraphicTab"),
+                 tabPanel("Console", verbatimTextOutput("interpolate"), value = "interpolatingConsoleTab"),
+                 tabPanel("Documentation",uiOutput("documentationInterpolating"), value = "interpolatingDocumentationTab"),
+                 id = "interpolatingTab"
                )
                
              )
              
            )
   ) ,
-  tabPanel("Analysis",      
+  tabPanel("Time Analysis",      
            pageWithSidebar(
              headerPanel("RHRV Project"),
              sidebarPanel(
-               h3("Analysis"),
+               h3("Time Analysis"),
                numericInput("sizeId", "Size:", 300),
                selectInput("analysisTFunction","",
                            list("Interval"="intervalId","Numofbins"="numofbinsId"),
@@ -121,28 +123,149 @@ shinyUI(fluidPage(
                
              ),
              mainPanel(
-               tabsetPanel( 
-                 tabPanel("Time",
-                          tabsetPanel(tabPanel("Graphic", verbatimTextOutput("timeanalysisvV"), tableOutput("timeanalysis")),tabPanel("Console", verbatimTextOutput("timeanalysisV")),tabPanel("Documentation",uiOutput("documentationTimeanalysis"))
-                                      
-                          )
-                  ),
-                 tabPanel("Frequency", 
-                          tabsetPanel(tabPanel("Graphic",plotOutput("fourier"), plotOutput("wavelet")),tabPanel("Console", verbatimTextOutput("fourierT")),tabPanel("Documentation",uiOutput("documentationFrequencyanalysis"))        
-                          )
-                 ),
-                 tabPanel("Non Linear", 
-                          tabsetPanel(tabPanel("Graphic"),tabPanel("Console"),tabPanel("Documentation")        
-                          )
-                 )
-                 
-               )
+               tabsetPanel(
+                 tabPanel("Graphic",  tableOutput("timeanalysis"), value = "timeAnalysisGraphicTab"),
+                 tabPanel("Console", verbatimTextOutput("timeanalysisV"), value = "timeAnalysisConsoleTab"),
+                 tabPanel("Documentation",uiOutput("documentationTimeanalysis"), value = "timeAnalysisDocumentationTab"),
+                 id = "timeAnalysisTab"
+                 )     
+              
+             )
            
         
              )
              
-           )
+           
   ) ,
+  tabPanel("Frequency Analysis",      
+           pageWithSidebar(
+             headerPanel("RHRV Project"),
+             sidebarPanel(
+               h3("Frequency Analysis"),
+               
+              #SPECTROGRAM OPTIONS
+               conditionalPanel(
+                   condition = "input.frequencyAnalysisTab == 'frequencySpectrogramTab'",
+                   numericInput("sizeSpectrogram", "Size:", 300)
+                 ) , 
+              conditionalPanel(
+                   condition = "input.frequencyAnalysisTab == 'frequencySpectrogramTab'",
+                   numericInput("shiftSpectrogram", "Shift:", 10)
+                 ),
+              conditionalPanel(
+                   condition = "input.frequencyAnalysisTab == 'frequencySpectrogramTab'",
+                   numericInput("sizespSpectrogram", "Sizesp:", 1024)
+                 ),
+              conditionalPanel(
+                   condition = "input.frequencyAnalysisTab == 'frequencySpectrogramTab'",
+                   textInput("scaleSpectrogram", "Scale:", "linear")
+                 ),
+               
+               #FOURIER OPTIONS
+              conditionalPanel(
+                 condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                 numericInput("sizeFourier", "Size:", 300)
+               ) , 
+              conditionalPanel(
+                 condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                 numericInput("shiftFourier", "Shift:", 10)
+               ),
+              conditionalPanel(
+                 condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                 numericInput("sizespFourier", "Sizesp:", 1024)
+               ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                numericInput("ulfmin","ULFmin:",0)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                  numericInput("ulfmax","ULFmax:",0.03)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                  numericInput("vlfmin","VLFmin:",0.03)
+              ),
+              conditionalPanel(
+                  condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                  numericInput("vlfmax","VLFmax:",0.05)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                  numericInput("lfmin","LFmim:",0.05)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                  numericInput("lfmax","LFmax:",0.15)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                  numericInput("hfmin","HFmin:",0.15)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                  numericInput("hfmax","HFmax:",0.4)
+              ),
+              
+              #WAVELET OPTIONS
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("ulfminW","ULFmin:",0)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("ulfmaxW","ULFmax:",0.03)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("vlfminW","VLFmin:",0.03)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("vlfmaxW","VLFmax:",0.05)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("lfminW","LFmim:",0.05)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("lfmaxW","LFmax:",0.15)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("hfminW","HFmin:",0.15)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("hfmaxW","HFmax:",0.4)
+              )
+
+               # submitButton("Update View")
+               
+               
+             ),
+             mainPanel(
+               tabsetPanel(
+                 tabPanel("Spectrogram",tabsetPanel(tabPanel("Graphic", plotOutput("spectrogramP")),tabPanel("Console", verbatimTextOutput("spectrogram")),tabPanel("Documentation",uiOutput("documentationSpectrogram")),id="spectrogramTab")    , value="frequencySpectrogramTab"                             
+                 ),
+                 tabPanel("Fourier",tabsetPanel(tabPanel("Graphic", plotOutput("fourierP")),tabPanel("Console", verbatimTextOutput("fourierC")),tabPanel("Documentation",uiOutput("documentationFourier"),id="fourierTab"))    , value="frequencyFourierTab"                                                         
+                 ),
+                 tabPanel("Wavelet",tabsetPanel(tabPanel("Graphic", plotOutput("waveletP")),tabPanel("Console", verbatimTextOutput("waveletC")),tabPanel("Documentation",uiOutput("documentationWavelet"),id="waveletTab")), value="frequencyWaveletTab"                     
+                 ),  
+                 id = "frequencyAnalysisTab"
+                 )
+               
+            #   tabsetPanel(tabPanel("Graphic",plotOutput("fourier"), plotOutput("wavelet")),
+             #              tabPanel("Console", verbatimTextOutput("fourierT")),
+              #             tabPanel("Documentation",uiOutput("documentationFrequencyanalysis"))        
+               # )
+
+             )
+           )
+           
+  ) ,
+  
   tabPanel("Summary",      
            pageWithSidebar(
              headerPanel("RHRV Project"),
