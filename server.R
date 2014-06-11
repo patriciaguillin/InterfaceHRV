@@ -98,6 +98,7 @@ shinyServer(function(input, output) {
   })
   
   #LOADING FILE -> GRAPHIC
+  
   output$contents <- renderPlot({
     filename <- 'LoadBeatAscii.html'
     if(file.exists(filename) == FALSE){
@@ -160,6 +161,7 @@ shinyServer(function(input, output) {
       PlotNIHR(hrv.data)
     }
     
+    
     #LOADING FILE -> CONSOLE
     output$summary <- renderPrint({
       cat(">hrv.data = CreateHRVData() \n")
@@ -171,7 +173,7 @@ shinyServer(function(input, output) {
         date.split <- strsplit(date.in,split="-" )
         Date <- paste(date.split[[1]][3],date.split[[1]][2],date.split[[1]][1],sep="/")
         dateTTime <- paste(Date, Time, sep = ' ')
-        cat("\n>hrv.data = LoadBeatAscii(hrv.data, RecordName =",inFile$datapath,", scale =",as.numeric(input$timeScale),", datetime =",dateTTime,")\n")   
+        cat("\n>hrv.data = LoadBeatAscii(hrv.data, RecordName =",inFile$name,", scale =",as.numeric(input$timeScale),", datetime =",dateTTime,")\n")   
         hrv.data = LoadBeatAscii(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime)
         cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
@@ -184,7 +186,7 @@ shinyServer(function(input, output) {
         date.split <- strsplit(date.in,split="-" )
         Date <- paste(date.split[[1]][3],date.split[[1]][2],date.split[[1]][1],sep="/")
         dateTTime1 <- paste(Date, Time, sep = ' ')
-        cat(">hrv.data = LoadBeatRR(hrva.data, RecordName =",inFile$datapath,", scale =",as.numeric(input$timeScale),", datetime =",dateTTime1,")\n")
+        cat(">hrv.data = LoadBeatRR(hrva.data, RecordName =",inFile$name,", scale =",as.numeric(input$timeScale),", datetime =",dateTTime1,")\n")
         hrv.data = LoadBeatRR(hrv.data, RecordName= inFile$datapath, scale = as.numeric(input$timeScale), datetime = dateTTime1)       
         cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
@@ -192,7 +194,7 @@ shinyServer(function(input, output) {
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="wfdb")) {  
-        cat(">hrv.data = LoadBeatWFDB(hrv.data, RecordName =",inFile$datapath,", annotator =",input$wfdbAnnotator,")")
+        cat(">hrv.data = LoadBeatWFDB(hrv.data, RecordName =",inFile$name,", annotator =",input$wfdbAnnotator,")\n")
         hrv.data = LoadBeatWFDB(hrv.data, RecordName= inFile$datapath, annotator = input$wfdbAnnotator)       
         cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
@@ -200,7 +202,7 @@ shinyServer(function(input, output) {
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="polar")) {  
-        cat(">hrv.data = LoadBeatPolar(hrv.data, RecordName =",inFile$datapath,")")
+        cat(">hrv.data = LoadBeatPolar(hrv.data, RecordName =",inFile$name,")\n")
         hrv.data = LoadBeatPolar(hrv.data, RecordName= inFile$datapath)        
         cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
@@ -208,7 +210,7 @@ shinyServer(function(input, output) {
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="suunto")) {  
-        cat(">hrv.data = LoadBeatSuunto(hrv.data, RecordName =",inFile$datapath,")")
+        cat(">hrv.data = LoadBeatSuunto(hrv.data, RecordName =",inFile$name,")\n")
         hrv.data = LoadBeatSuunto(hrv.data, RecordName= inFile$datapath)        
         cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
@@ -216,7 +218,7 @@ shinyServer(function(input, output) {
         PlotNIHR(hrv.data)
       }
       else if(any(input$dist=="edf")) {  
-        cat(">hrv.data = LoadBeatEDFPlus(hrv.data, RecordName =",inFile$datapath,", annotationType =",input$edfAnotation,")")
+        cat(">hrv.data = LoadBeatEDFPlus(hrv.data, RecordName =",inFile$name,", annotationType =",input$edfAnotation,")\n")
         hrv.data = LoadBeatEDFPlus(hrv.data, RecordName= inFile$datapath, annotationType=input$edfAnotation)        
         cat("\n>hrv.data = BuildNIHR(hrv.data)\n")
         hrv.data = BuildNIHR(hrv.data)
@@ -440,22 +442,13 @@ shinyServer(function(input, output) {
     #Download
     output$downloadData <- downloadHandler(
       filename = function() {
-        paste(
-          '
-          data-
-          '
-          , Sys.Date(),
-          '
-          .csv
-          '
-          , sep=
-            ''
-        )
+        paste('data-', '.csv', sep='')
       },
-      content = function(con) {
-        write.csv(data, con)
+      content = function(file) {
+        write.csv(input.frequencyAnalysisTab, file)
       }
     )
+    # I
 
     #ANALYSIS -> NON LINEAR
     #(nada que mostrar por ahora)
