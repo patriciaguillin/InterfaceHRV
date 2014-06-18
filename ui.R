@@ -35,6 +35,7 @@ shinyUI(fluidPage(
             
               mainPanel(
                 #plotOutput("contents")
+                
                 tabsetPanel(
                     tabPanel("Graphic", plotOutput("contents"), value="loadingGraphicTab"),
                     tabPanel("Console", verbatimTextOutput("summary"), value="loagingConsoleTab"),
@@ -160,7 +161,15 @@ shinyUI(fluidPage(
                    condition = "input.frequencyAnalysisTab == 'frequencySpectrogramTab'",
                    textInput("scaleSpectrogram", "Scale:", "linear")
                  ),
-               
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencySpectrogramTab'",
+                numericInput("freqRangeMinSpectogram", "FreqRangeMin:", 0)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencySpectrogramTab'",
+                numericInput("freqRangeMaxSpectogram", "FreqRangeMax:", 2)
+              ),
+              
                #FOURIER OPTIONS
               conditionalPanel(
                  condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
@@ -208,6 +217,16 @@ shinyUI(fluidPage(
               ),
               
               #WAVELET OPTIONS
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+              selectInput("waveletW","Wavelet:",
+                          list("Haar"="haar","d4"="d4","d6"="d6","d8"="d8","d16"="d16","la8"="la8","la16"="la16","la20"="la20","bl14"="bl14","bl20"="bl20"),
+                          selected = "d4")
+              ),
+              #conditionalPanel(
+               # condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                #numericInput("bandtoleranceW","Bandtolerance:",0)
+              #),
               conditionalPanel(
                 condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
                 numericInput("ulfminW","ULFmin:",0)

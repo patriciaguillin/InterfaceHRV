@@ -378,13 +378,13 @@ shinyServer(function(input, output) {
     #Spectrogram
     output$spectrogramP <- renderPlot({
       hrv.data = CreateFreqAnalysis(hrv.data)
-      PlotSpectrogram(hrv.data, size = input$sizeSpectrogram, shift = input$shiftSpectrogram, sizesp = input$sizespSpectrogram, scale = input$scaleSpectrogram)
+      PlotSpectrogram(hrv.data, size = input$sizeSpectrogram, shift = input$shiftSpectrogram, sizesp = input$sizespSpectrogram, scale = input$scaleSpectrogram, freqRange = c(input$freqRangeMinSpectogram,input$freqRangeMaxSpectogram))
     })
     output$spectrogram <- renderPrint({
       cat(">hrv.data = CreateFreqAnalysis(hrv.data)\n")
       hrv.data = CreateFreqAnalysis(hrv.data)
-      cat("\n>PlotSpectrogram(hrv.data, size =",input$sizeSpectrogram,", shift =",input$shiftSpectrogram,", sizesp =",input$sizespSpectrogram,",scale =",input$scaleSpectrogram,")\n")
-      spectogram = PlotSpectrogram(hrv.data, size = input$sizeSpectrogram, shift = input$shiftSpectrogram, sizesp = input$sizespSpectrogram, scale = input$scaleSpectrogram) 
+      cat("\n>PlotSpectrogram(hrv.data, size =",input$sizeSpectrogram,", shift =",input$shiftSpectrogram,", sizesp =",input$sizespSpectrogram,",scale =",input$scaleSpectrogram,"freqRange = c(",input$freqRangeMinSpectogram,",",input$freqRangeMaxSpectogram,"))\n")
+      spectogram = PlotSpectrogram(hrv.data, size = input$sizeSpectrogram, shift = input$shiftSpectrogram, sizesp = input$sizespSpectrogram, scale = input$scaleSpectrogram,freqRange = c(input$freqRangeMinSpectogram,input$freqRangeMaxSpectogram)) 
     })
     output$documentationSpectrogram <- renderUI({
       includeHTML("PlotSpectrogram.html")
@@ -416,7 +416,7 @@ shinyServer(function(input, output) {
     output$waveletP <- renderPlot({
       hrv.data = CreateFreqAnalysis(hrv.data)
       hrv.data  = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, type="wavelet", 
-                                     wavelet="la8", bandtolerance=0.01, relative = FALSE,
+                                     wavelet=input$waveletW, bandtolerance=0.01, relative = FALSE,
                                      ULFmin = input$ulfminW, ULFmax = input$ulfmaxW, VLFmin = input$vlfminW, VLFmax = input$vlfmaxW,
                                      LFmin = input$lfminW, LFmax = input$lfmaxW, HFmin = input$hfminW, HFmax = input$hfmaxW)
       PlotPowerBand(hrv.data, indexFreqAnalysis = 1, ymax = 700, ymaxratio = 50)
@@ -424,9 +424,9 @@ shinyServer(function(input, output) {
     output$waveletC <- renderPrint({
       cat(">hrv.data = CreateFreqAnalysis(hrv.data)\n")
       hrv.data = CreateFreqAnalysis(hrv.data)
-      cat("\n>hrv.data = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, type= \"wavelet\", wavelet= \"la8\", bandtolerance = 0.01, relative = FALSE, ULFmin =",input$ulfminW,", ULFmax =",input$ulfmaxW,", VLFmin =",input$vlfminW,", VLFmax =",input$vlfmaxW,", LFmin =",input$lfminW,", LFmax =",input$lfmaxW,", HFmin =",input$hfminW,", HFmax =",input$hfmaxW,")\n")
+      cat("\n>hrv.data = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, type= \"wavelet\", wavelet= \"",input$waveletW,"\", bandtolerance = 0.01, relative = FALSE, ULFmin =",input$ulfminW,", ULFmax =",input$ulfmaxW,", VLFmin =",input$vlfminW,", VLFmax =",input$vlfmaxW,", LFmin =",input$lfminW,", LFmax =",input$lfmaxW,", HFmin =",input$hfminW,", HFmax =",input$hfmaxW,")\n")
       hrv.data = CalculatePowerBand(hrv.data, indexFreqAnalysis = 1, type="wavelet", 
-                                    wavelet="la8", bandtolerance=0.01, relative = FALSE, ULFmin = input$ulfminW, 
+                                    wavelet=input$waveletW, bandtolerance=0.01, relative = FALSE, ULFmin = input$ulfminW, 
                                     ULFmax = input$ulfmaxW, VLFmin = input$vlfminW, VLFmax = input$vlfmaxW,
                                     LFmin = input$lfminW, LFmax = input$lfmaxW, HFmin = input$hfminW, HFmax = input$hfmaxW)
       cat("\n>PlotPowerBand(hrv.data, indexFreqAnalysis = 1, ymax = 200, ymaxratio = 1.7)\n")
