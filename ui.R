@@ -9,43 +9,50 @@ shinyUI(fluidPage(
     tags$style(
       HTML("@import url('//fonts.googleapis.com/css?family=Lobster|Cabin:400,700');"))
   ),
-  navbarPage("RHRV Project",
+  navbarPage("RHRV Project", 
   tabPanel("Loading File",      
     pageWithSidebar(
       headerPanel("RHRV Project"),
       sidebarPanel(
-          h3("Loading files"),
-          fileInput("file1", "Choose file:", multiple=TRUE),
-          tags$hr(),
-          selectInput("dist","File type:",
-                      list("Ascii"="ascii","RR"="rr","WFDB"="wfdb","Polar"="polar","Suunto"="suunto","EDF+"="edf"),
-                      selected = "ascii"),
-          #,"Chi-square"="chisq","Log-normal"="lnorm","Beta"="beta"
-          uiOutput("dist1"),
-          uiOutput("dist2"),
-          uiOutput("dist3"),
-          uiOutput("dist4"),
-          uiOutput("dist5"),
-          uiOutput("dist6"),
-          uiOutput("dist7"),
-          uiOutput("dist8")
-      
-        ),
-            
-            
-              mainPanel(
-                #plotOutput("contents")
-                
-                tabsetPanel(
-                    tabPanel("Graphic", plotOutput("contents"), value="loadingGraphicTab"),
-                    tabPanel("Console", verbatimTextOutput("summary"), value="loagingConsoleTab"),
-                    tabPanel("Documentation", uiOutput("documentationLoading1"), value="loadingDocumentationTab"),
-                    id = "loadingTab"
-                             
-                  )
+        h3("Loading files"),
         
-                
-                )
+        selectInput("dist","File type:",
+                    list("Ascii"="ascii","RR"="rr","WFDB"="wfdb","Polar"="polar","Suunto"="suunto","EDF+"="edf"),
+                    selected = "ascii"),
+        #,"Chi-square"="chisq","Log-normal"="lnorm","Beta"="beta"
+        tags$hr(),
+        uiOutput("distFileAscii"),
+        uiOutput("distFileRR"),
+        uiOutput("distFileWFDB"),
+        uiOutput("distFilePolar"),
+        uiOutput("distFileSuunto"),
+        uiOutput("distFileEDF"),
+        uiOutput("dist1"),
+        uiOutput("dist2"),
+        uiOutput("dist3"),
+        uiOutput("dist4"),
+        uiOutput("dist5"),
+        uiOutput("dist6"),
+        uiOutput("dist7"),
+        uiOutput("dist8")
+        
+      ),
+      
+      
+      mainPanel(
+        #plotOutput("contents")
+        
+        tabsetPanel(
+          tabPanel("Graphic", plotOutput("contents"), value="loadingGraphicTab"),
+          tabPanel("Console", verbatimTextOutput("summary"), value="loagingConsoleTab"),
+          tabPanel("Documentation", uiOutput("documentationLoading1"), value="loadingDocumentationTab"),
+          id = "loadingTab"
+          
+        )
+        
+        
+                  
+                  )
             
       )
     ) ,     
@@ -92,7 +99,6 @@ shinyUI(fluidPage(
                            choices = c("spline","linear"),
                            selected = "spline"
                )
-               #submitButton("Update View")
                
              ),
              mainPanel(
@@ -125,7 +131,7 @@ shinyUI(fluidPage(
              ),
              mainPanel(
                tabsetPanel(
-                 tabPanel("Graphic",  tableOutput("timeanalysis"), value = "timeAnalysisGraphicTab"),
+                 tabPanel("Graphic",  br(), br(), br(),tableOutput("timeanalysis"), value = "timeAnalysisGraphicTab"),
                  tabPanel("Console", verbatimTextOutput("timeanalysisV"), value = "timeAnalysisConsoleTab"),
                  tabPanel("Documentation",uiOutput("documentationTimeanalysis"), value = "timeAnalysisDocumentationTab"),
                  id = "timeAnalysisTab"
@@ -171,6 +177,7 @@ shinyUI(fluidPage(
               ),
               
                #FOURIER OPTIONS
+              
               conditionalPanel(
                  condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
                  numericInput("sizeFourier", "Size:", 300)
@@ -215,6 +222,18 @@ shinyUI(fluidPage(
                 condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
                   numericInput("hfmax","HFmax:",0.4)
               ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                h5("PlotPowerBand options:")
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                numericInput("ymax","Ymax:",200)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyFourierTab'",
+                numericInput("ymaxratio","Ymaxratio:",1.7)
+              ),
               
               #WAVELET OPTIONS
               conditionalPanel(
@@ -223,10 +242,16 @@ shinyUI(fluidPage(
                           list("Haar"="haar","d4"="d4","d6"="d6","d8"="d8","d16"="d16","la8"="la8","la16"="la16","la20"="la20","bl14"="bl14","bl20"="bl20"),
                           selected = "d4")
               ),
-              #conditionalPanel(
-               # condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
-                #numericInput("bandtoleranceW","Bandtolerance:",0)
-              #),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("bandtoleranceW","Bandtolerance:",0.01)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                selectInput("relativeW","Relative:",
+                            list("Relative"="TRUE","Absolute"="FALSE"),
+                            selected = "FALSE")
+              ),
               conditionalPanel(
                 condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
                 numericInput("ulfminW","ULFmin:",0)
@@ -258,9 +283,21 @@ shinyUI(fluidPage(
               conditionalPanel(
                 condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
                 numericInput("hfmaxW","HFmax:",0.4)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                h5("PlotPowerBand options:")
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("ymaxWavelet","Ymax:",700)
+              ),
+              conditionalPanel(
+                condition = "input.frequencyAnalysisTab == 'frequencyWaveletTab'",
+                numericInput("ymaxratioWavelet","Ymaxratio:",50)
               )
+              #submitButton("Update View")
 
-               # submitButton("Update View")
                
                
              ),
@@ -290,11 +327,17 @@ shinyUI(fluidPage(
              headerPanel("RHRV Project"),
              sidebarPanel(
                h3("Summary"),
-               downloadButton('downloadData', 'Download')
+               downloadButton("downloadPDF", "Download shiny PDF report")
              ),
              mainPanel(
-               #plotOutput("contents")
-               h3("Summary")
+               h3("Summary"),
+               plotOutput("contentsSummary"),
+               h3("Time Analysis"),
+               tableOutput("timeAnalysisSummary"),
+               h3("Fourier Transform"),
+               plotOutput("fourierSummary"),
+               h3("Wavelet Transform"),
+               plotOutput("waveletSummary")
                
              )
              

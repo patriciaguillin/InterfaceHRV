@@ -1,0 +1,41 @@
+\documentclass{article}
+
+\begin{document}
+
+\title{Analysis of HRV}
+\maketitle
+
+
+<<echo=FALSE, fig.height=5, results='hide'>>=
+  PlotHR(hrv.data)
+@
+
+
+Time Analysis
+
+<<>>=
+  rownames(smoke) <- c("Outcome")
+  colnames(smoke) <- c("SDNN","SDANN","SDNNIDX","pNN50","SDSD","r-MSSD","IRRR","MADRR","TINN","HRV #index")
+  smoke
+@
+
+
+Fourier transform
+
+<<echo=FALSE, fig.height=5, results='hide'>>=
+  PlotPowerBand(hrv.Fourier, indexFreqAnalysis = 1, ymax = input$ymax, ymaxratio = input$ymaxratio)
+@
+ 
+ 
+Wavelet transform
+
+<<echo=FALSE, fig.height=5, results='hide'>>=
+  PlotPowerBand(hrv.Wavelet, indexFreqAnalysis = 1, ymax = input$ymaxWavelet, ymaxratio = input$ymaxratioWavelet)
+@
+  
+     
+
+
+
+
+\end{document}
