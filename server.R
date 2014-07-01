@@ -453,12 +453,11 @@ shinyServer(function(input, output, session) {
                           hr$TimeAnalysis[[1]]$pNN50,hr$TimeAnalysis[[1]]$SDSD,hr$TimeAnalysis[[1]]$rMSSD,
                           hr$TimeAnalysis[[1]]$IRRR,hr$TimeAnalysis[[1]]$MADRR,hr$TimeAnalysis[[1]]$TINN,
                           hr$TimeAnalysis[[1]]$HRVi),ncol=10,byrow=TRUE)
-        rownames(smoke) <- c("Outcome")
         colnames(smoke) <- c("SDNN","SDANN","SDNNIDX","pNN50","SDSD","r-MSSD","IRRR","MADRR","TINN","HRV index")
         smoke
         
         
-      })
+      },include.rownames=FALSE)
       output$timeanalysisV <- renderPrint({
         if(any(input$analysisTFunction=="intervalId")) { 
           cat(">hrv.data = CreateTimeAnalysis(hrv.data, size = ",input$sizeId,", numofbins = NULL, interval = ",input$valueTime,", verbose = NULL)\n", sep="")
@@ -558,7 +557,7 @@ shinyServer(function(input, output, session) {
       rownames(smoke) <- c("Outcome")
       colnames(smoke) <- c("SDNN","SDANN","SDNNIDX","pNN50","SDSD","r-MSSD","IRRR","MADRR","TINN","HRV index")
       smoke
-    })
+    },include.rownames=FALSE)
     
     output$fourierSummary <- renderPlot({
       hrv.Fourier <<- CreateFreqAnalysis(hrv.data)
@@ -582,29 +581,15 @@ shinyServer(function(input, output, session) {
     output$downloadPDF <-
       downloadHandler(filename = "summary.pdf",
                       content = function(file){
-                        # generate PDF
                         knit2pdf("report.Rnw")
-                        
-                        # copy pdf to 'file'
                         file.copy("report.pdf", file)
-                        
-                        # delete generated files
                         file.remove("report.pdf", "report.tex",
                                     "report.aux", "report.log")
-                        
-                        # delete folder with plots
                         unlink("figure", recursive = TRUE)
                       },
                       contentType = "application/pdf"
       )
-    # I
 
-    #ANALYSIS -> NON LINEAR
-    #(nada que mostrar por ahora)
-    
-    
-    
-    
     
     })
     })

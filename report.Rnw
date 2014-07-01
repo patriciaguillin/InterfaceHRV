@@ -10,26 +10,25 @@
   PlotHR(hrv.data)
 @
 
+\ \\ \\
+\section{Time Analysis}
 
-Time Analysis
-
-<<>>=
-  rownames(smoke) <- c("Outcome")
-  colnames(smoke) <- c("SDNN","SDANN","SDNNIDX","pNN50","SDSD","r-MSSD","IRRR","MADRR","TINN","HRV #index")
-  smoke
+<<echo=FALSE,results = 'asis'>>=
+   colnames(smoke) <- c("SDNN","SDANN","SDNNIDX","pNN50","SDSD","r-MSSD","IRRR","MADRR","TINN","HRV index")
+  kable(smoke,  format="latex" )
 @
 
+\ \\ \\ \\ \\ \\ \\
+\section{Fourier transform}
 
-Fourier transform
-
-<<echo=FALSE, fig.height=5, results='hide'>>=
+<<echo=FALSE, fig.height=4, results='hide'>>=
   PlotPowerBand(hrv.Fourier, indexFreqAnalysis = 1, ymax = input$ymax, ymaxratio = input$ymaxratio)
 @
  
- 
-Wavelet transform
+\ \\ \\ 
+\section{Wavelet transform}
 
-<<echo=FALSE, fig.height=5, results='hide'>>=
+<<echo=FALSE, fig.height=4, results='hide'>>=
   PlotPowerBand(hrv.Wavelet, indexFreqAnalysis = 1, ymax = input$ymaxWavelet, ymaxratio = input$ymaxratioWavelet)
 @
   
