@@ -95,7 +95,7 @@ shinyUI(fluidPage(
                numericInput("freqHR", "Freq_HR:", 4),
                helpText("Freq_HR: Sampling frequency used in the interpolation. (Default: 4HZ)"),
                selectInput(inputId = "methodInterpolation",
-                           label = "Time scale:",
+                           label = "Method:",
                            choices = c("spline","linear"),
                            selected = "spline"
                )

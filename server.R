@@ -152,9 +152,7 @@ shinyServer(function(input, output, session) {
       if (is.null(inFile))
         return(NULL)
       #x <- list(x = cars[,1], y = cars[,2])
-      
-      data <- read.csv(file=inFile$datapath,header=F)$V1
-      print(head(data))
+
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
       
@@ -174,9 +172,7 @@ shinyServer(function(input, output, session) {
       if (is.null(inFile))
         return(NULL)
       #x <- list(x = cars[,1], y = cars[,2])
-      
-      data <- read.csv(file=inFile$datapath,header=F)$V1
-      print(head(data))
+
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
       
@@ -218,9 +214,7 @@ shinyServer(function(input, output, session) {
       if (is.null(inFile))
         return(NULL)
       #x <- list(x = cars[,1], y = cars[,2])
-      
-      data <- read.csv(file=inFile$datapath,header=F)$V1
-      print(head(data))
+
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
       
@@ -235,9 +229,7 @@ shinyServer(function(input, output, session) {
       if (is.null(inFile))
         return(NULL)
       #x <- list(x = cars[,1], y = cars[,2])
-      
-      data <- read.csv(file=inFile$datapath,header=F)$V1
-      print(head(data))
+
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
       
@@ -252,9 +244,7 @@ shinyServer(function(input, output, session) {
       if (is.null(inFile))
         return(NULL)
       #x <- list(x = cars[,1], y = cars[,2])
-      
-      data <- read.csv(file=inFile$datapath,header=F)$V1
-      print(head(data))
+
       hrv.data = CreateHRVData()
       hrv.data = SetVerbose(hrv.data, TRUE)
       
